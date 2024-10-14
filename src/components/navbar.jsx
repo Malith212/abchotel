@@ -85,11 +85,6 @@ const Navbar = () => {
                 Contact Us
               </a>
             </li>
-            <li>
-              <a href="/careers" className="block py-2 px-3 hover:underline md:p-0"> {/* Careers Page */}
-                Careers
-              </a>
-            </li>
           </ul>
         </div>
       </div>
