@@ -8,6 +8,8 @@ import HotelMenuPage from "./Pages/HotelMenuPage";
 import ItemMenuPageCustomer from "./Pages/ItemMenuPageCustomer";
 import HotelMenuCustomerPage from "./Pages/HotelMenuCustomerPage";
 import Navbar from "./components/navbar";
+import PaymentPage from "./Pages/PaymentPage";
+import ShoppingPage from "./Pages/ShoppingPage";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
       <Route path="/itemMenuPageCustomer" element={<ItemMenuPageCustomer/>}></Route>
       <Route path="/hotelMenuPageCustomer" element={<HotelMenuCustomerPage/>}></Route>
       <Route path="/navbar" element={<Navbar/>}></Route>
+      <Route path="/payment" element={<PaymentPage/>}></Route>
+      <Route path="/shopping" element={<ShoppingPage/>}></Route>
     </Routes>
     </BrowserRouter>
       
