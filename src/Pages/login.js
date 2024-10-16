@@ -104,6 +104,7 @@ function Login() {
           <img src={loginImg} alt="Pasta dish" className="object-cover w-full h-full" />
         </div>
       </div>
+
     </div>
   );
 }
