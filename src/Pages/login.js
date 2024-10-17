@@ -74,7 +74,7 @@ function Login() {
             </button>
           </form>
           
-          <div className="mt-6 relative">
+          {/* <div className="mt-6 relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
             </div>
@@ -96,7 +96,7 @@ function Login() {
           
           <p className="mt-8 text-xs text-center text-gray-600">
             Don't have an account? <a href="#" className="text-orange-500 hover:underline">Sign Up</a>
-          </p>
+          </p> */}
         </div>
         
         {/* Right side - Image */}

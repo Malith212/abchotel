@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 // MenuItem Component
 const MenuItem = ({ title, price, imageUrl }) => {
@@ -59,7 +60,8 @@ const ItemMenu = () => {
           <p className="text-orange-700 ml-14">Enjoy a satisfying meal that’s full of flavor and perfectly crafted to please your taste buds.</p>
         </div>
         <button className="mr-14 bg-white text-orange-900 border border-orange-900 py-2 px-4 rounded-md hover:bg-orange-100">
-          Add New
+          <Link to='/add-new-item'>Add New</Link>
+          
         </button>
       </div>
       
