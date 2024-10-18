@@ -1,6 +1,7 @@
 import React from 'react'
 import HotelMenu from '../components/Restaurant Manager/HotelMenu'
-import Navbar from '../components/navbar'
+import Footer from '../components/footer';
+import Navbar from '../components/navbar';
 
 
 function HotelMenuPage() {
@@ -9,6 +10,10 @@ function HotelMenuPage() {
     <div>
       <Navbar/>
        <HotelMenu/>
+
+       <div className='absolute inset-x-0 bottom-0'>
+        <Footer/>
+      </div>
 
     </div>
   )

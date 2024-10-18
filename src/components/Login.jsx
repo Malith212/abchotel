@@ -32,9 +32,10 @@ function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="flex flex-col-reverse md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+        
         {/* Left side - Login Form */}
-        <div className="w-1/2 p-8">
+        <div className="w-full md:w-1/2 p-4 md:p-8">
           <h2 className="text-2xl font-semibold mb-4">Welcome back!</h2>
           <p className="text-sm text-gray-600 mb-6">Enter your credentials to access your account</p>
           
@@ -74,37 +75,13 @@ function Login() {
             </button>
           </form>
           
-          {/* <div className="mt-6 relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">or</span>
-            </div>
-          </div>
-
-          <div className="mt-6 grid grid-cols-2 gap-3">
-            <a href="#" className="flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <FaGoogle className="mr-2 my-1" />
-              Sign in with Google
-            </a>
-            <a href="#" className="flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <FaApple className="mr-2 h-5" />
-              Sign in with Apple
-            </a>
-          </div>
-          
-          <p className="mt-8 text-xs text-center text-gray-600">
-            Don't have an account? <a href="#" className="text-orange-500 hover:underline">Sign Up</a>
-          </p> */}
         </div>
         
         {/* Right side - Image */}
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2 h-96 md:h-auto">
           <img src={loginImg} alt="Pasta dish" className="object-cover w-full h-full" />
         </div>
       </div>
-
     </div>
   );
 }
