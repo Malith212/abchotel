@@ -10,11 +10,14 @@ import HotelMenuCustomerPage from "./Pages/HotelMenuCustomerPage";
 import Navbar from "./components/navbar";
 import PaymentPage from "./Pages/PaymentPage";
 import ShoppingPage from "./Pages/ShoppingPage";
+import ItemView from "./components/Customer/ItemView";
+import NewMenu from "./components/Restaurant Manager/NewMenu";
+import QRCodeGenerate from "./components/Restaurant Manager/QRCodeGenerate";
 
 function App() {
   return (
     <>
-    <Navbar />
+   
     <BrowserRouter>
     <Routes>
       
@@ -28,6 +31,9 @@ function App() {
       <Route path="/navbar" element={<Navbar/>}></Route>
       <Route path="/payment" element={<PaymentPage/>}></Route>
       <Route path="/shopping" element={<ShoppingPage/>}></Route>
+      <Route path="/item-view" element={<ItemView/>}></Route>
+      <Route path="/add-new-menu" element={<NewMenu/>}></Route>
+      <Route path="/generate-qr" element={<QRCodeGenerate/>}></Route>
     </Routes>
     </BrowserRouter>
       

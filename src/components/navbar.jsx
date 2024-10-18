@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import logo from "../assets/image 21.png";
+import { IoLogOut } from "react-icons/io5";
+
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -85,6 +93,9 @@ const Navbar = () => {
                 Contact Us
               </a>
             </li>
+            <li>
+            <button onClick={handleLogout}> <IoLogOut className="text-lg" /></button>
+             </li>
           </ul>
         </div>
       </div>

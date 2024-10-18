@@ -1,5 +1,6 @@
 import React,{ useEffect,useState } from 'react'
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 const MenuItem = ({ title, imageUrl }) => (
     <div className="relative rounded-lg overflow-hidden shadow-md">
@@ -13,8 +14,9 @@ const MenuItem = ({ title, imageUrl }) => (
   const AddNewItem = () => (
     <div className="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center h-48">
       <div className="text-center">
+
         <button>
-            <p className="text-gray-500 mb-1">Add New</p>
+            <p className="text-gray-500 mb-1" ><Link to="/add-new-menu"> Add New </Link> </p>
         </button>
         <span className="text-gray-400 text-3xl">+</span>
       </div>
@@ -41,6 +43,7 @@ function HotelMenu() {
   
     return (
       <div className="container mx-auto px-4 py-8 ">
+        <div className='text-right'><Link to='/generate-qr'><button className='py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#e9902c] hover:bg-orange-600 p-4 '>Generate New QR code</button></Link></div>
         <h1 className="text-3xl font-bold text-orange-900 mb-2 ml-14">Hotel Menu</h1>
         <p className="text-orange-700 mb-6 ml-14 mr-14">Indulge in our wide selection of delicious and wholesome dishes, crafted to satisfy every craving. From savory meals to refreshing sides, each item is made with the freshest ingredients and packed with flavor, ensuring a delightful dining experience every time.
 

@@ -3,40 +3,41 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import Navbar from '../navbar';
 
-export default function NewItem() {
+export default function NewMenu() {
     const[name,setName]=useState('');
-    const[price,setPrice]=useState('');
     const[description,setDescription]=useState('');
     const[image,setImage]=useState('');
     const navigate = useNavigate();
-    const [error, setError] = useState('');
+    const [ setError] = useState('');
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
           await axios.post('', {
            name,
-           price,
            description,
            image
            
           });
     
-          toast.success("New Product is added successfully! ");
+          toast.success("New Menu Category is added successfully! ");
           setTimeout(() => navigate(''), 2000);
         } catch (err) {
           // Display specific error messages if available
-          const errorMessage = err.response?.data?.message || 'Product adding is failed. Please try again.';
+          const errorMessage = err.response?.data?.message || 'Menu Category adding is failed. Please try again.';
           setError(errorMessage);
           toast.error(errorMessage);
         }
       };
 
-  return (
+  return (<>
+    <Navbar/>
     <div className="p-6 bg-white shadow-md rounded-lg m-6 mt-10">
+     
       {/* Title */}
-      <div className="text-2xl font-bold text-[#5b3100] mb-4">Add New Item</div>
+      <div className="text-2xl font-bold text-[#5b3100] mb-4">Add New Menu</div>
       <form onSubmit={handleRegister}>
       <div className='w-full flex m-5 mt-10  h-100%'>
 
@@ -94,18 +95,7 @@ export default function NewItem() {
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Price</label>
-          <input
-             type="text"
-             value={price}
-             onChange={(e) => setPrice(e.target.value)}
-             required
-             aria-label="Price"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm bg-[#fafafa]"
-            placeholder="Price"
-          />
-        </div>
+        
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Description</label>
@@ -139,6 +129,6 @@ export default function NewItem() {
         </button>
       </div>
     </div></form>
-    <ToastContainer /></div>
+    <ToastContainer /></div></>
   );
 }
