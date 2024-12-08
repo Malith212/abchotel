@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useEffect } from "react";
 
-const PaymentSummary = () => {
+const PaymentSummary = ({ setTotalAmount }) => {
   const items = [
-    { name: 'Egg Fried Rice', size: 'm', price: 400.00 },
-    { name: 'Egg Fried Rice', size: 'm', price: 50.00 }
+    { name: "Egg Fried Rice", size: "m", price: 1000.0 },
+    { name: "Egg Fried Rice", size: "m", price: 100.0 },
   ];
 
   const total = items.reduce((acc, item) => acc + item.price, 0);
 
+  // Update the parent state with the total amount
+  useEffect(() => {
+    setTotalAmount(total);
+  }, [total, setTotalAmount]);
+
   return (
-    <div className="p-8 bg-white rounded-md shadow-md max-w-md md:max-w-lg lg:max-w-xl mx-auto"> {/* Responsive width change */}
+    <div className="p-8 bg-white rounded-md shadow-md max-w-md md:max-w-lg lg:max-w-xl mx-auto">
       <h2 className="text-lg font-semibold mb-4">You’re paying,</h2>
       <div className="text-3xl font-bold mb-6">${total.toFixed(2)}</div>
       <div className="mb-6">
