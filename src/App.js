@@ -23,7 +23,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       
-      <Route path="/" element ={<Login/>}></Route>
+      <Route path="/" element ={<HotelMenuCustomerPage/>}></Route>
       <Route path="/add-new-item" element={<NewItem/>}></Route>
       <Route path="/login" element = {<Login/>}></Route>
       <Route path="/itemMenuPage" element = {<ItemMenuPage/>}></Route>

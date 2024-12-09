@@ -19,7 +19,9 @@ const Navbar = () => {
   return (
     <nav className="bg-amber-950">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="/" className="flex items-center space-x-3"> {/* Home Page */}
+        <a href="/" className="flex items-center space-x-3">
+          {" "}
+          {/* Home Page */}
           <img src={logo} className="h-10 w-10" alt="logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
             ABC Hotel
@@ -69,33 +71,55 @@ const Navbar = () => {
 
         {/* Menu links */}
         <div
-          className={`${menuOpen ? "block" : "hidden"} w-full md:block md:w-auto`}
+          className={`${
+            menuOpen ? "block" : "hidden"
+          } w-full md:block md:w-auto`}
           id="navbar-default"
         >
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg  md:flex-row md:space-x-8 md:mt-0 md:border-0  text-white">
             <li>
-              <a href="/" className="block py-2 px-3 hover:underline md:p-0"> {/* Home Page */}
+              <a href="/" className="block py-2 px-3 hover:underline md:p-0">
+                {" "}
+                {/* Home Page */}
                 Home
               </a>
             </li>
             <li>
-              <a href="/services" className="block py-2 px-3 hover:underline md:p-0"> {/* Services Page */}
+              <a
+                href="/services"
+                className="block py-2 px-3 hover:underline md:p-0"
+              >
+                {" "}
+                {/* Services Page */}
                 Services
               </a>
             </li>
             <li>
-              <a href="/about" className="block py-2 px-3 hover:underline md:p-0"> {/* About Us Page */}
+              <a
+                href="/about"
+                className="block py-2 px-3 hover:underline md:p-0"
+              >
+                {" "}
+                {/* About Us Page */}
                 About Us
               </a>
             </li>
             <li>
-              <a href="/contact" className="block py-2 px-3 hover:underline md:p-0"> {/* Contact Us Page */}
+              <a
+                href="/contact"
+                className="block py-2 px-3 hover:underline md:p-0"
+              >
+                {" "}
+                {/* Contact Us Page */}
                 Contact Us
               </a>
             </li>
             <li>
-            <button onClick={handleLogout}> <IoLogOut className="text-lg" /></button>
-             </li>
+              <button onClick={handleLogout}>
+                {" "}
+                <IoLogOut className="text-lg" />
+              </button>
+            </li>
           </ul>
         </div>
       </div>
