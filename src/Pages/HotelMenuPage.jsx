@@ -7,8 +7,9 @@ function HotelMenuPage() {
   return (
     <div className="min-h-screen bg-orange-50">
       <Navbar />
-      <HotelMenu />
-
+      <div className=" py-14">
+        <HotelMenu />
+      </div>
       <div className="absolute inset-x-0 bottom-0">
         <Footer />
       </div>
