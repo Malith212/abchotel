@@ -6,10 +6,10 @@ import Navbar from "../components/navbar";
 function ItemMenuPage() {
   return (
     <div className="min-h-screen bg-orange-50">
-      <div>
-        <Navbar />
+      <Navbar />
+      <div className=" py-14">
+        <ItemMenu />
       </div>
-      <ItemMenu />
       <div className="absolute inset-x-0 bottom-0">
         <Footer />
       </div>
