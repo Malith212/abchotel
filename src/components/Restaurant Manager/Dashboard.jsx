@@ -16,7 +16,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/dashboard");
+        const response = await axios.get(""); // Add correct API endpoint in here
         setData(response.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -36,7 +36,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 sm:p-8 md:p-10 lg:p-12">
+    <div className="p-6 sm:p-8 md:p-10 lg:p-12">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-orange-900">Dashboard</h2>
         <p className="text-gray-500">{currentDateTime}</p>
@@ -69,7 +69,7 @@ const Dashboard = () => {
                 </h3>
                 <AiOutlineCheckCircle className="h-10 w-10 text-orange-900" />
               </div>
-              <p className="text-4xl font-bold text-brown-900 mt-4">
+              <p className="text-3xl font-semibold text-brown-900 mt-4">
                 {data.dailyCompletedOrder}
               </p>
             </div>
@@ -98,7 +98,7 @@ const Dashboard = () => {
                 </h3>
                 <FiDollarSign className="h-10 w-10 text-orange-900" />
               </div>
-              <p className="text-4xl font-bold text-brown-900 mt-4">
+              <p className="text-3xl font-semibold text-brown-900 mt-4">
                 Rs. {data.dailyIncome.toLocaleString()}
               </p>
             </div>

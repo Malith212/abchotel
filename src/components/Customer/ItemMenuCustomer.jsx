@@ -62,7 +62,7 @@ const ItemMenuCustomer = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 relative z-10">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold text-orange-900 py-3 ml-14">

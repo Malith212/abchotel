@@ -1,25 +1,14 @@
 import React, { useState } from "react";
 import logo from "../assets/image 21.png";
-import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// ...existing code...
 
-const Navbar = () => {
+const Navbar2 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:4000/user/logout");
-      localStorage.removeItem("token");
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
   };
 
   return (
@@ -79,38 +68,11 @@ const Navbar = () => {
         className={`${
           menuOpen ? "block" : "hidden"
         } md:block md:flex md:items-center md:space-x-6 mr-4`}
-      >
+      ></div>
         <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-white">
-          {/* <li>
-            <a href="/" className="hover:underline">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="/services" className="hover:underline">
-              Services
-            </a>
-          </li>
-          <li>
-            <a href="/about" className="hover:underline">
-              About Us
-            </a>
-          </li>
-          <li>
-            <a href="/contact" className="hover:underline">
-              Contact Us
-            </a>
-          </li> */}
-          <li>
-            <button onClick={handleLogout} className="flex items-center">
-              <IoLogOut className="text-lg mr-1" />
-              Logout
-            </button>
-          </li>
         </ul>
-      </div>
     </nav>
   );
 };
 
-export default Navbar;
+export default Navbar2;
