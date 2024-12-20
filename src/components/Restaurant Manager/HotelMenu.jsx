@@ -44,14 +44,7 @@ function HotelMenu() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-right">
-        <Link to="/generate-qr">
-          <button className="py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#e9902c] hover:bg-orange-600 p-4 ">
-            Generate New QR code
-          </button>
-        </Link>
-      </div>
+    <div className="container mx-auto px-4 py-8 relative z-10">
       <h1 className="text-3xl font-bold text-orange-900 mb-2 ml-14">
         Hotel Menu
       </h1>

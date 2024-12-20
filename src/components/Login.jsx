@@ -1,37 +1,48 @@
 import React, { useState } from 'react';  
 import axios from 'axios';  
+import { useNavigate } from 'react-router-dom';  
+import { toast, ToastContainer } from 'react-toastify';  
+import 'react-toastify/dist/ReactToastify.css';  
 import loginImg from '../assets/loginImg.png';
 import { FaGoogle, FaApple } from 'react-icons/fa';
 
 function Login() {  
 
   // State to store email and password inputs
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [user_email, setEmail] = useState('');
+  const [user_password, setPassword] = useState('');
+  const navigate = useNavigate();  // Initialize useNavigate
   
   const onLogin = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      console.log('Please fill in both email and password');
+    if (!user_email || !user_password) {
+      toast.error('Please fill in both email and password');  // Show error toast for empty fields
       return;
     }
 
     const data = {
-      email,
-      password
+      user_email,
+      user_password
     };
 
     try {
-      const response = await axios.post('LOGIN_API_ENDPOINT', data);  // Add API endpoint for login here
+      const response = await axios.post('http://localhost:4000/user/login', data);
       console.log('Login successful', response.data);
+      localStorage.setItem('token', response.data.token);  // Store token in local storage
+      toast.success('Login successful!');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1000); 
     } catch (error) {
       console.error('Login error', error);
+      toast.error('Login failed. Please try again.');  // Show error toast
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-orange-100">
+    <div className="flex items-center justify-center min-h-screen">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover /> 
       <div className="flex flex-col-reverse md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
         
         {/* Left side - Login Form */}
@@ -46,7 +57,7 @@ function Login() {
                 type="email" 
                 id="email" 
                 className="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                value={email} 
+                value={user_email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 required 
               />
@@ -58,7 +69,7 @@ function Login() {
                 type="password" 
                 id="password" 
                 className="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                value={password} 
+                value={user_password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 required
               />

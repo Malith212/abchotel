@@ -35,7 +35,7 @@ function HotelMenuCustomer() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 relative z-10">
       <h1 className="text-3xl font-bold text-orange-900 mb-2 ml-14">
         Hotel Menu
       </h1>

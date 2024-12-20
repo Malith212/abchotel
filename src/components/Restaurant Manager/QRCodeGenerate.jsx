@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import TableList from './tableList';
+import Footer2 from '../footer2';
 
 export default function QRCodeGenerate() {
     const [tableName, setTableName] = useState('');
@@ -52,35 +53,41 @@ export default function QRCodeGenerate() {
     };
 
     return (
-        <div>
+        <div className='bg-orange-50 min-h-screen relative py-14'>
+            <div
+                className="absolute inset-0"
+                style={{ backgroundImage: 'url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520&w=1060)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.3, zIndex: 0 }}
+            ></div>
             <Navbar />
-            <div className="p-6 bg-white shadow-md rounded-lg m-6 mt-10">
-                <div className="text-2xl font-bold text-[#5b3100] mb-4">Generate QR Code</div>
-                <form onSubmit={handleGenerateQR}>
-                    <div className="w-full flex m-5 mt-10">
-                        <div className="border-gray-300 rounded-lg p-6 flex flex-col items-center w-1/2 ml-4">
-                            {qrCode && (
-                                <div>
-                                    <img src={qrCode} alt="QR Code" className="w-32 h-32 mb-4" />
-                                    <div className="flex space-x-2">
-                                        <button
-                                            onClick={handlePrint}
-                                            className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#e9902c] hover:bg-orange-600"
-                                        >
-                                            Print QR Code
-                                        </button>
-                                        <a
-                                            href={qrCode}
-                                            download={`Table-${tableName}-QRCode.png`}
-                                            className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#4caf50] hover:bg-green-600"
-                                        >
-                                            Download QR Code
-                                        </a>
+            <div className="flex flex-row relative z-10">
+                <div className="w-full md:w-1/2 p-6 bg-white shadow-md rounded-lg m-6 mt-10">
+                    <div className="text-2xl font-bold text-amber-950 mb-4">Add New Table</div>
+                    <form onSubmit={handleGenerateQR}>
+                        <div className="w-full flex m-5 mt-10">
+                            <div className="border-gray-300 rounded-lg p-6 flex flex-col items-center w-full">
+                                {qrCode && (
+                                    <div>
+                                        <img src={qrCode} alt="QR Code" className="w-32 h-32 mb-4" />
+                                        <div className="flex space-x-2">
+                                            <button
+                                                onClick={handlePrint}
+                                                className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#e9902c] hover:bg-orange-600"
+                                            >
+                                                Print QR Code
+                                            </button>
+                                            <a
+                                                href={qrCode}
+                                                download={`Table-${tableName}-QRCode.png`}
+                                                className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#4caf50] hover:bg-green-600"
+                                            >
+                                                Download QR Code
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
-                        <div className="space-y-4 w-1/2 ml-4 mr-4">
+                        <div className="space-y-4 w-full">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Table Name</label>
                                 <input
@@ -94,28 +101,31 @@ export default function QRCodeGenerate() {
                                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                             </div>
                         </div>
-                    </div>
-                    <div className="mt-6 flex justify-end space-x-3">
-                        <button
-                            type="button"
-                            onClick={() => navigate('/')}
-                            className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-[#a85900] hover:bg-gray-400"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#e9902c] hover:bg-orange-600"
-                            disabled={loading}
-                        >
-                            {loading ? 'Generating...' : 'Save'}
-                        </button>
-                    </div>
-                </form>
-                <ToastContainer />
+                        <div className="mt-6 flex justify-end space-x-3">
+                            <button
+                                type="button"
+                                onClick={() => navigate('/dashboard')}
+                                className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-[#a85900] hover:bg-gray-400"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#e9902c] hover:bg-orange-600"
+                                disabled={loading}
+                            >
+                                {loading ? 'Generating...' : 'Save'}
+                            </button>
+                        </div>
+                    </form>
+                    <ToastContainer />
+                </div>
+                <div className="w-full md:w-1/2 p-6 bg-white shadow-md rounded-lg m-6 mt-10">
+                    <TableList />
+                </div>
             </div>
-            <div className="p-6 bg-white shadow-md rounded-lg m-6 mt-10">
-                <TableList />
+            <div className="bottom-0 w-full fixed">
+                <Footer2 />
             </div>
         </div>
     );
