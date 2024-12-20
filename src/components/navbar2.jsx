@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/image 21.png";
 import { useNavigate } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa"; // Import cart icon
 // ...existing code...
 
 const Navbar2 = () => {
@@ -28,49 +29,12 @@ const Navbar2 = () => {
         onClick={toggleMenu}
         type="button"
         className="inline-flex items-center p-2 w-10 h-10 justify-center text-white rounded-lg md:hidden"
-      >
-        <span className="sr-only">Open main menu</span>
-        {menuOpen ? (
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
-        ) : (
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        )}
-      </button>
+      ></button>
 
-      {/* Navigation Links */}
-      <div
-        className={`${
-          menuOpen ? "block" : "hidden"
-        } md:block md:flex md:items-center md:space-x-6 mr-4`}
-      ></div>
-        <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8 text-white">
-        </ul>
+      {/* Cart Icon */}
+      <div className="flex items-center pr-4">
+        <FaShoppingCart className="text-white w-6 h-6 cursor-pointer" />
+      </div>
     </nav>
   );
 };
