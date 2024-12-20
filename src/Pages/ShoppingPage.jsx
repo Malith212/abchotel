@@ -1,6 +1,6 @@
 import React from 'react';
-import ShoppingCart from '../components/Customer/ShoppingCart';
-import PaymentSummary from '../components/Customer/PaymentSummary';
+import ShoppingCart from '../components/Customer/ShoppingCart.jsx';
+import PaymentSummary from '../components/Customer/PaymentSummary.jsx';
 
 const ShoppingPage = () => {
   return (

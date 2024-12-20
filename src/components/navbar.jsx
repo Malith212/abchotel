@@ -4,7 +4,7 @@ import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Navbar = () => {
+function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -111,6 +111,6 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;

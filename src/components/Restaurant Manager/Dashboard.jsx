@@ -3,13 +3,22 @@ import axios from "axios";
 import { AiOutlineCheckCircle, AiOutlineShoppingCart } from "react-icons/ai";
 import { FiDollarSign } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
   const [data, setData] = useState({
     dailyCompletedOrder: 0,
     pendingOrder: 0,
     dailyIncome: 0,
-    weekIncomeData: [],
+    weekIncomeData: [
+      { day: "Mon", income: 20000.00 },
+      { day: "Tue", income: 30000.00 },
+      { day: "Wed", income: 25000.00 },
+      { day: "Thu", income: 40000.00 },
+      { day: "Fri", income: 35000.00 },
+      { day: "Sat", income: 45000.00 },
+      { day: "Sun", income: 50000.00 },
+    ],
   });
   const [currentDateTime, setCurrentDateTime] = useState("");
 
@@ -17,6 +26,7 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(""); // Add correct API endpoint in here
+        console.log("Fetched data:", response.data);
         setData(response.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -35,27 +45,37 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  console.log("Dashboard data:", data);
+
   return (
     <div className="p-6 sm:p-8 md:p-10 lg:p-12">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-orange-900">Dashboard</h2>
-        <p className="text-gray-500">{currentDateTime}</p>
+        <h2 className="text-3xl font-bold text-orange-950">Dashboard</h2>
+        <p className="text-amber-800 font-bold">{currentDateTime}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Week Income Graph */}
-        <div>
-          <h3 className="text-lg rounded-lg font-bold text-brown-900 mb-4 bg-gray-200 sm:p-6 md:p-8 lg:p-10 h-full mt-6">
-            Week Income Graph
+        <div className="bg-gray-50 sm:p-6 md:p-8 lg:p-10 h-full mt-6 rounded-lg">
+          <h3 className="text-lg font-bold text-amber-950 mb-4">
+            Past Week Income Graph
           </h3>
-          <div className="flex justify-between text-brown-900">
-            {data.weekIncomeData.map((item, index) => (
-              <div key={index} className="text-center">
-                <p className="font-bold">{item.day}</p>
-                <p className="font-bold">{item.income}</p>
-              </div>
-            ))}
-          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={data.weekIncomeData}>
+              <defs>
+                <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#E0440E" stopOpacity={0.8}/>
+                  <stop offset="95%" stopColor="#FFBB28" stopOpacity={0.8}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="income" fill="url(#colorIncome)" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         {/* Cards Section */}
@@ -70,7 +90,8 @@ const Dashboard = () => {
                 <AiOutlineCheckCircle className="h-10 w-10 text-orange-900" />
               </div>
               <p className="text-3xl font-semibold text-brown-900 mt-4">
-                {data.dailyCompletedOrder}
+                {/* {data.dailyCompletedOrder} */}
+                05
               </p>
             </div>
 
@@ -82,8 +103,9 @@ const Dashboard = () => {
                 </h3>
                 <AiOutlineShoppingCart className="h-10 w-10 text-orange-900" />
               </div>
-              <button className="bg-gray-300 text-brown-900 px-4 py-4 rounded-md hover:bg-orange-500 hover:text-white transition-colors duration-300 mt-4">
-                {data.pendingOrder}
+              <button className="bg-orange-50 text-brown-900 px-4 py-4 rounded-md font-bold hover:bg-orange-500 hover:text-white transition-colors duration-300 mt-4">
+                {/* {data.pendingOrder} */}
+                02
               </button>
             </div>
           </div>
@@ -99,7 +121,8 @@ const Dashboard = () => {
                 <FiDollarSign className="h-10 w-10 text-orange-900" />
               </div>
               <p className="text-3xl font-semibold text-brown-900 mt-4">
-                Rs. {data.dailyIncome.toLocaleString()}
+                {/* Rs. {data.dailyIncome.toLocaleString()} */}
+                Rs. 12500.00
               </p>
             </div>
           </div>
