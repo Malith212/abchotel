@@ -76,8 +76,8 @@ const PaymentForm = ({ totalAmount }) => {
   };
 
   return (
-    <div className="p-8 bg-white rounded-md shadow-md max-w-lg mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Let’s Make Payment</h2>
+    <div className="p-8 bg-white rounded-md shadow-md max-w-lg mx-auto relative z-10">
+      <h2 className="text-2xl font-semibold mb-4">Let's Make Payment</h2>
       <p className="text-gray-600 mb-6">
         To start your subscription, input your card details to make payment of <strong>${totalAmount.toFixed(2)}</strong>.
       </p>
