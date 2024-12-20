@@ -60,17 +60,32 @@ export default function NewItem() {
     }
   };
 
+  const handleCancel = () => {
+    navigate(`/itemMenuPage?category_id=${categoryId}`);
+  };
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    const categoryIdFromUrl = queryParams.get('category_id');
+    const categoryIdFromUrl = queryParams.get("category_id");
     setCategoryId(categoryIdFromUrl);
     console.log("categoryIdFromUrl", categoryIdFromUrl);
   }, []);
 
   return (
-    <div className="min-h-screen bg-orange-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-orange-50 flex flex-col justify-between relative">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520&w=1060)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          opacity: 0.3,
+          zIndex: 0,
+        }}
+      ></div>
       <Navbar />
-      <div className="flex justify-center items-center flex-grow">
+      <div className="flex justify-center items-center flex-grow relative z-10">
         <div className="p-10 bg-white shadow-md rounded-lg m-6 min-h-full max-w-full w-full md:w-3/4 lg:w-4/5">
           {/* Title */}
           <div className="text-2xl font-semibold text-[#5b3100] mb-4">
@@ -215,6 +230,7 @@ export default function NewItem() {
             <div className="mt-6 flex justify-end space-x-3">
               <button
                 type="button"
+                onClick={handleCancel}
                 className="inline-flex justify-center py-2 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-[#a85900] hover:bg-gray-400"
               >
                 Cancel
@@ -230,7 +246,9 @@ export default function NewItem() {
           <ToastContainer />
         </div>
       </div>
-      <Footer2/>
+      <div className="bottom-0 w-full fixed">
+        <Footer2 />
+      </div>
     </div>
   );
 }
