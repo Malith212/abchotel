@@ -48,8 +48,8 @@ const Dashboard = () => {
   console.log("Dashboard data:", data);
 
   return (
-    <div className="p-6 sm:p-8 md:p-10 lg:p-12">
-      <div className="flex justify-between items-center mb-6">
+    <div className="sm:p-8 md:p-10 relative">
+      <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold text-orange-950">Dashboard</h2>
         <p className="text-amber-800 font-bold">{currentDateTime}</p>
       </div>
