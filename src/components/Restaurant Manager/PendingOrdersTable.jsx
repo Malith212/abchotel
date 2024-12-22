@@ -7,6 +7,10 @@ const PendingOrdersTable = () => {
     { orderTime: '6:00 PM', tableNo: 5, items: 'Salad, Pasta', status: 'Complete' },
     { orderTime: '6:15 PM', tableNo: 3, items: 'Pizza, Soda', status: 'Pending' },
     { orderTime: '6:45 PM', tableNo: 8, items: 'Steak, Mashed Potatoes', status: 'Pending' },
+    { orderTime: '5:30 PM', tableNo: 1, items: 'French Fries, Burger', status: 'Pending' },
+    { orderTime: '6:00 PM', tableNo: 5, items: 'Salad, Pasta', status: 'Complete' },
+    { orderTime: '6:15 PM', tableNo: 3, items: 'Pizza, Soda', status: 'Pending' },
+    { orderTime: '6:45 PM', tableNo: 8, items: 'Steak, Mashed Potatoes', status: 'Pending' },
   ]);
 
   const [currentDateTime, setCurrentDateTime] = useState('');
@@ -36,22 +40,22 @@ const PendingOrdersTable = () => {
   };
 
   return (
-    <div className="p-6 sm:p-8 md:p-10 lg:p-12 mt-4">
+    <div className="p-6 sm:p-8 md:p-10 lg:p-12">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Pending Orders</h2>
-        <p className="text-gray-500">{currentDateTime}</p>
+        <h2 className="text-2xl text-amber-950 font-bold">Pending Orders</h2>
+        <p className="text-amber-950 font-bold">{currentDateTime}</p>
       </div>
 
       {/* Desktop View (Table) */}
-      <div className="overflow-x-auto rounded-lg border border-orange-400 bg-orange-80 hidden md:block">
+      <div className="overflow-x-auto rounded-lg border border-orange-400 bg-orange-80 hidden md:block bg-white">
         <table className="w-full table-auto">
           <thead>
             <tr className="border border-gray-200 shadow-sm">
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Order Time</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Table No</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Ordered Items</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Status</th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Order Time</th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Table No</th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Ordered Items</th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-gray-900">Status</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
