@@ -1,154 +1,177 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from '../navbar';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import Navbar2 from "../navbar2";
+import Footer from "../footer";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
-export default function ItemView({ itemId }) {  // Accept itemId as a prop
-    const [item, setItem] = useState(null); // To store the item details
-    const [selectedSize, setSelectedSize] = useState(''); // Default size
-    const [quantity, setQuantity] = useState(1);
-    const [loading, setLoading] = useState(true); // To manage loading state
-    const [error, setError] = useState(null); // To store error messages
+export default function ItemView() {
+  const { dish_id } = useParams();
+  const [item, setItem] = useState(null);
+  const [quantities, setQuantities] = useState({
+    small: 0,
+    medium: 0,
+    large: 0,
+  });
+  const [imageLoaded, setImageLoaded] = useState(false);
 
-    // Fetch item details from API
-    useEffect(() => {
-        const fetchItemDetails = async () => {
-            try {
-                const response = await fetch(`/api/items/${itemId}`); // API endpoint to fetch item details
-                if (!response.ok) {
-                    throw new Error('Failed to fetch item details');
-                }
-                const data = await response.json();
-                setItem(data);
-                setSelectedSize(data.sizesWithPrices[0]?.size || ''); // Set default size
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
-        fetchItemDetails();
-    }, [itemId]); // Rerun when itemId changes
-
-    // Handle adding the item to the cart (API call)
-    const handleAddToCart = async () => {
-        try {
-            const response = await fetch(`/api/cart`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    itemId: item.id,
-                    size: selectedSize,
-                    quantity,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add to cart');
-            }
-
-            const result = await response.json();
-            // Show success notification
-            toast.success(`${quantity} x ${item.name} (Size: ${selectedSize}) added to cart!`, {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        } catch (err) {
-            // Show error notification
-            toast.error('Failed to add item to cart.', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-        }
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/dish/${dish_id}`
+        );
+        setItem(response.data);
+      } catch (error) {
+        console.error("Error fetching item details:", error);
+      }
     };
 
-    // Loading and error handling
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    fetchItemDetails();
+  }, [dish_id]);
 
-    if (error) {
-        return <div>{error}</div>;
-    }
+  const handleIncrement = (size) => {
+    setQuantities({ ...quantities, [size]: (quantities[size] || 0) + 1 });
+  };
 
-    // Get the price of the selected size
-    const selectedPrice = item.sizesWithPrices.find(sizeObj => sizeObj.size === selectedSize)?.price || 0;
+  const handleDecrement = (size) => {
+    setQuantities({
+      ...quantities,
+      [size]: Math.max((quantities[size] || 0) - 1, 0),
+    });
+  };
 
+  const handleAddToCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // For each size (small, medium, large), we check if there are any quantities added
+    Object.keys(quantities).forEach((size) => {
+      if (quantities[size] > 0) {
+        // Add item to the cart
+        cart.push({
+          dish_id: item.dish_id,
+          dish_name: item.dish_name,
+          size: size,
+          quantity: quantities[size],
+          price: item.dishPrices.find((p) => p.size === size).price,
+        });
+      }
+    });
+
+    // Save updated cart to local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Show success toast notification
+    toast.success("Item added to cart!");
+  };
+
+  if (!item) {
     return (
-        <div>
-            <Navbar />
-            <ToastContainer />
-            <div className="container mx-auto p-8">
-                {/* Item Image */}
-                <div className="w-full flex justify-center mb-8">
-                    <img src={item.image} alt={item.name} className="w-96 h-96 object-cover rounded-lg shadow-lg" />
-                </div>
-
-                {/* Item Details */}
-                <div className="bg-white p-6 shadow-md rounded-lg">
-                    {/* Name */}
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">{item.name}</h2>
-
-                    {/* Description */}
-                    <p className="text-gray-700 mb-4">{item.description}</p>
-
-                    {/* Size Selection */}
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Size</label>
-                        <div className="flex space-x-3 mt-2">
-                            {item.sizesWithPrices.map((sizeObj) => (
-                                <button
-                                    key={sizeObj.size}
-                                    onClick={() => setSelectedSize(sizeObj.size)}
-                                    className={`px-4 py-2 border rounded-md ${selectedSize === sizeObj.size ? 'bg-orange-500 text-white' : 'bg-white text-gray-900 border-gray-300'} focus:outline-none hover:bg-orange-500 hover:text-white`}
-                                >
-                                    {sizeObj.size}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Price */}
-                    <div className="mb-4">
-                        <p className="text-xl font-semibold text-gray-800">Price: ${selectedPrice.toFixed(2)}</p>
-                    </div>
-
-                    {/* Quantity Selection */}
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Quantity</label>
-                        <input
-                            type="number"
-                            value={quantity}
-                            onChange={(e) => setQuantity(Number(e.target.value))}
-                            min="1"
-                            className="mt-1 block w-20 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                        />
-                    </div>
-
-                    {/* Add to Cart Button */}
-                    <div className="mt-6">
-                        <button
-                            onClick={handleAddToCart}
-                            className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 focus:outline-none"
-                        >
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-orange-50">
+      {/* Toast Container */}
+      <ToastContainer />
+      <div
+        className="fixed inset-0 bg-cover bg-center opacity-20"
+        style={{
+          backgroundImage:
+            "url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520)",
+        }}
+      ></div>
+
+      {/* Navbar */}
+      <div className="sticky top-0 z-20 bg-orange-50">
+        <Navbar2 />
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-grow container mx-auto py-8 px-4 md:py-24 md:px-8 relative z-10 ">
+        {/* Image and Title Section */}
+        <div className="relative mt-4">
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-50">
+              <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+            </div>
+          )}
+          <img
+            src={item.dish_image_url} // Use the image URL from the fetched item
+            alt={item.dish_name}
+            className="w-full h-48 md:h-64 object-cover rounded-md"
+            onLoad={() => setImageLoaded(true)}
+          />
+          <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white p-2 rounded-md">
+            <h2 className="text-xl md:text-2xl font-bold">{item.dish_name}</h2>
+            <p className="text-xs md:text-sm">{item.dish_description}</p>
+          </div>
+        </div>
+
+        {/* Description Section */}
+        <div className="pt-4">
+          <h3 className="text-lg font-bold mb-2">Description</h3>
+          <p className="text-gray-600 text-sm md:text-base">
+            {item.dish_description}
+          </p>
+        </div>
+
+        {/* Pricing and Quantity Section */}
+        <div className="flex flex-col items-center pt-2">
+          <div className="space-y-4 w-full max-w-md">
+            {item.dishPrices.map((price) => (
+              <div
+                key={price.size}
+                className="flex flex-row sm:flex-row justify-between items-center space-y-4 sm:space-y-0"
+              >
+                <div className="flex-1 md:flex-2 lg:flex-2 text-center md:text-base lg:text-base">
+                  {price.size} {item.dish_name}
+                </div>
+                <div className="flex-1 text-center text md:text-base">
+                  Rs. {Number(price.price).toFixed(2)}
+                </div>
+                <div className="flex-1 flex justify-center items-center space-x-2">
+                  <button
+                    onClick={() => handleDecrement(price.size)}
+                    className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md"
+                  >
+                    -
+                  </button>
+                  <span className="text md:text-base">
+                    {quantities[price.size]}
+                  </span>
+                  <button
+                    onClick={() => handleIncrement(price.size)}
+                    className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Add to Cart Button */}
+        <div className="mt-6 text-right">
+          <button
+            onClick={handleAddToCart}
+            className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600"
+          >
+            Add to cart
+          </button>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-orange-50 sticky">
+        <Footer />
+      </div>
+    </div>
+  );
 }

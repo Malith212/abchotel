@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import NewItem from "./components/Restaurant Manager/NewItem";
@@ -25,9 +24,8 @@ function App() {
    
     <BrowserRouter>
     <Routes>
-
       
-    <Route path="/" element={<HotelDashboard />}></Route>
+    <Route path="/dashboard" element={<HotelDashboard />}></Route>
       <Route path="/hotelMenuCustomerPage" element={<HotelMenuCustomerPage/>}></Route>
       <Route path="/add-new-item" element={<NewItem/>}></Route>
       <Route path="/login" element = {<Login/>}></Route>
@@ -37,21 +35,13 @@ function App() {
       <Route path="/hotelMenuPageCustomer" element={<HotelMenuCustomerPage/>}></Route>
       <Route path="/pendingOrderPage" element={<HotelPendingOders/>}></Route>
       <Route path="/navbar" element={<Navbar/>}></Route>
-      <Route
-            path="/payment"
-            element={
-              <Elements stripe={stripePromise}>
-                <PaymentPage />
-              </Elements>
-            }
-          />
+      <Route path="/payment/:cartId" element={<Elements stripe={stripePromise}><PaymentPage /></Elements>}/>
       <Route path="/shopping" element={<ShoppingPage/>}></Route>
-      <Route path="/item-view" element={<ItemView/>}></Route>
+      <Route path="/item-view/:dish_id" element={<ItemView/>}></Route>
       <Route path="/add-new-menu" element={<NewMenu/>}></Route>
       <Route path="/generate-qr" element={<QRCodeGenerate/>}></Route>
     </Routes>
     </BrowserRouter>
-      
     </>
   );
 }

@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 // MenuItem Component
-const MenuItem = ({ dish_name, dish_image_url, dishPrices, dish_description }) => {
+const MenuItem = ({ dish_id, dish_name, dish_image_url, dishPrices, dish_description }) => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const selectedPrice = dishPrices[0]; // Select the first price in the array
+
+  const handleClick = () => {
+    navigate(`/item-view/${dish_id}`); // Navigate to ItemView page
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div
+      className="bg-white rounded-lg shadow-md p-4 transform transition-transform duration-300 hover:scale-105 cursor-pointer"
+      onClick={handleClick} // Add onClick handler
+    >
       <img
         src={dish_image_url}
         alt={dish_name}
@@ -62,17 +72,17 @@ const ItemMenuCustomer = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto py-8 relative z-10">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-orange-900 py-3 ml-14">
+          <h1 className="text-3xl font-bold text-orange-900 py-3">
             {categoryName}
           </h1>
-          <p className="text-orange-700 ml-14">{categoryDescription}</p>
+          <p className="text-orange-700">{categoryDescription}</p>
         </div>
       </div>
 
-      <div className="ml-14 mr-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-5">
         {menuItems &&
           menuItems.map((item) => <MenuItem key={item.dish_id} {...item} />)}
       </div>

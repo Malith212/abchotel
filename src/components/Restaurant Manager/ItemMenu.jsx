@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 // MenuItem Component
-const MenuItem = ({ dish_name, dish_image_url , dishPrices }) => {
+const MenuItem = ({ dish_id, dish_name, dish_image_url , dishPrices }) => {
   const [isAvailable, setIsAvailable] = useState(true);
   const selectedPrice = dishPrices[0]; // Select the first price in the array
 
 
   const toggleAvailability = async () => {
     try {
-      const response = await axios.get(""); // Add actual API endpoint
+      const response = await axios.post(`http://localhost:4000/dish/toggle-availability/${dish_id}`, {
+        isAvailable: !isAvailable
+      });
       if (response) {
         setIsAvailable(!isAvailable);
       }
@@ -27,10 +30,10 @@ const MenuItem = ({ dish_name, dish_image_url , dishPrices }) => {
       <button
         onClick={toggleAvailability}
         className={`mt-2 w-full py-2 px-4 rounded-md flex items-center justify-center transition-colors duration-200 ${
-          isAvailable ? 'bg-orange-400 text-white hover:bg-orange-500' : 'bg-red-500 text-white hover:bg-red-600'
+          isAvailable ? 'bg-orange-400 text-white hover:bg-orange-500' : 'bg-red-600 text-white hover:bg-red-600'
         }`}
       >
-        <span className="mr-2">{isAvailable ? '□' : '■'}</span>
+        {isAvailable ? <FaCheckCircle className="mr-2" /> : <FaTimesCircle className="mr-2" />}
         {isAvailable ? 'Availability' : 'Not Available'}
       </button>
     </div>
@@ -75,7 +78,7 @@ const ItemMenu = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 relative z-10">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold text-orange-900 py-3 ml-14">

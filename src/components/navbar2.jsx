@@ -1,25 +1,19 @@
 import React, { useState } from "react";
 import logo from "../assets/image 21.png";
-import { IoLogOut } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { FaShoppingCart } from "react-icons/fa"; // Import cart icon
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+// ...existing code...
 
-function Navbar() {
+const Navbar2 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Define navigate
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleLogout = async () => {
-    try {
-      await axios.post("http://localhost:4000/user/logout");
-      localStorage.removeItem("token");
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
+  const handleCartClick = () => {
+    navigate("/shopping");
   };
 
   return (
@@ -40,15 +34,13 @@ function Navbar() {
         type="button"
         className="inline-flex items-center p-2 w-10 h-10 justify-center text-white rounded-lg md:hidden"
       ></button>
-      <button
-        onClick={handleLogout}
-        className="flex items-center text-white pr-4"
-      >
-        <IoLogOut className="text-lg mr-1" />
-        Logout
-      </button>
+
+      {/* Cart Icon */}
+      <div className="flex items-center pr-4">
+        <FaShoppingCart className="text-white w-6 h-6 cursor-pointer" onClick={handleCartClick} />
+      </div>
     </nav>
   );
-}
+};
 
-export default Navbar;
+export default Navbar2;
