@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useLocation, useParams } from "react-router-dom"; // Update this import
+import { toast, ToastContainer } from "react-toastify"; // Update this import
+import 'react-toastify/dist/ReactToastify.css'; // Add this import
+import { useNavigate } from "react-router-dom";
+
 
 const PaymentForm = ({ totalAmount }) => {
   const stripe = useStripe();
@@ -10,6 +15,8 @@ const PaymentForm = ({ totalAmount }) => {
   const [clientSecret, setClientSecret] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const currency = "usd";
+  const navigate = useNavigate();
+  const { cartId } = useParams(); // Use useParams to get cartId from URL
   // Fetch clientSecret when the component mounts
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -20,6 +27,7 @@ const PaymentForm = ({ totalAmount }) => {
           body: JSON.stringify({ amount: totalAmount, currency }),
         });
         console.log(response);
+        console.log(cartId);
         // if (!response.ok) {
         //   throw new Error("Failed to fetch client secret");
         // }
@@ -28,12 +36,12 @@ const PaymentForm = ({ totalAmount }) => {
         setClientSecret(data.clientSecret);
       } catch (error) {
         console.error("Error fetching client secret:", error);
-        // alert("Error initializing payment. Please try again.");
+        // toast.error("Error initializing payment. Please try again."); // Add this line
       }
     };
 
     fetchClientSecret();
-  }, [totalAmount]);
+  }, [totalAmount, cartId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,10 +74,43 @@ const PaymentForm = ({ totalAmount }) => {
         throw new Error(confirmError.message);
       }
 
-      alert(`Payment of $${totalAmount.toFixed(2)} was successful!`);
+      // alert(`Payment of $${totalAmount.toFixed(2)} was successful!`);
+      toast.success(`Payment of $${totalAmount.toFixed(2)} was successful!`); // Add this line
+  
+      // Send order request after payment success
+      const orderData = {
+        cart_id: cartId,  // cart_id from URL
+        total_price: totalAmount,  // total amount from payment
+        payment: {
+          customer_name: cardholderName,
+          customer_email: email,
+        },
+      };
+
+      const orderResponse = await fetch("http://localhost:4000/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!orderResponse.ok) {
+        throw new Error("Order creation failed");
+      }
+
+      const orderDataResponse = await orderResponse.json();
+      console.log("Order created successfully:", orderDataResponse);
+
+      // alert("Order has been created successfully!");
+      toast.success("Order has been created successfully!"); // Add this line
+
+      // Clear the cart in local storage
+      localStorage.removeItem("cart");
+
+      setTimeout(() => navigate("/hotelMenuPageCustomer"), 2000);
+
     } catch (error) {
       console.error("Payment Error:", error);
-      alert(error.message || "Payment failed. Please try again.");
+      toast.error(error.message || "Payment failed. Please try again."); // Add this line
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +120,7 @@ const PaymentForm = ({ totalAmount }) => {
     <div className="p-8 bg-white rounded-md shadow-md max-w-lg mx-auto relative z-10">
       <h2 className="text-2xl font-semibold mb-4">Let's Make Payment</h2>
       <p className="text-gray-600 mb-6">
-        To start your subscription, input your card details to make payment of <strong>${totalAmount.toFixed(2)}</strong>.
+        To start your subscription, input your card details to make payment of <strong>Rs {totalAmount.toFixed(2)}</strong>.
       </p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -131,6 +172,7 @@ const PaymentForm = ({ totalAmount }) => {
           {isLoading ? "Processing..." : `Pay $${totalAmount.toFixed(2)}`}
         </button>
       </form>
+      <ToastContainer /> {/* Add this line */}
     </div>
   );
 };

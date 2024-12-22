@@ -37,6 +37,27 @@ export default function ItemView() {
     setQuantities({ ...quantities, [size]: Math.max((quantities[size] || 0) - 1, 0) });
   };
 
+  const handleAddToCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    
+    // For each size (small, medium, large), we check if there are any quantities added
+    Object.keys(quantities).forEach((size) => {
+      if (quantities[size] > 0) {
+        // Add item to the cart
+        cart.push({
+          dish_id: item.dish_id,
+          dish_name: item.dish_name,
+          size: size,
+          quantity: quantities[size],
+          price: item.dishPrices.find(p => p.size === size).price,
+        });
+      }
+    });
+    
+    // Save updated cart to local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
+
   if (!item) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -117,7 +138,10 @@ export default function ItemView() {
 
         {/* Add to Cart Button */}
         <div className="mt-6 text-right">
-          <button className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600">
+          <button
+            onClick={handleAddToCart}
+            className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600"
+          >
             Add to cart
           </button>
         </div>
