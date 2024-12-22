@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiOutlineCheckCircle, AiOutlineShoppingCart } from "react-icons/ai";
 import { FiDollarSign } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
@@ -10,43 +10,37 @@ const Dashboard = () => {
     dailyCompletedOrder: 0,
     pendingOrder: 0,
     dailyIncome: 0,
-    weekIncomeData: [
-      { day: "Mon", income: 20000.00 },
-      { day: "Tue", income: 30000.00 },
-      { day: "Wed", income: 25000.00 },
-      { day: "Thu", income: 40000.00 },
-      { day: "Fri", income: 35000.00 },
-      { day: "Sat", income: 45000.00 },
-      { day: "Sun", income: 50000.00 },
-    ],
+    weekIncomeData: [],  // Initially set to an empty array
   });
   const [currentDateTime, setCurrentDateTime] = useState("");
-  const navigate = useNavigate(); // Use useNavigate hook
+  const navigate = useNavigate();
   
   const handleClick = () => {
-    navigate('/pendingOrderPage'); // Navigate to the pendingOrderPage
+    navigate('/pendingOrderPage');
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Replace these with the actual API endpoints
+        // Fetch the necessary data from your backend
         const completedOrderResponse = await axios.get("http://localhost:4000/order/dailycompletedorderscount/count");
         const pendingOrderResponse = await axios.get("http://localhost:4000/order/pendingcount/count");
         const dailyIncomeResponse = await axios.get("http://localhost:4000/order/dailyincome/income");
+        const weeklyIncomeResponse = await axios.get("http://localhost:4000/order/weeklyincome/byDays");  // Fetch the weekly income data
 
         console.log("Fetched data:", {
           completedOrder: completedOrderResponse.data,
           pendingOrder: pendingOrderResponse.data,
           dailyIncome: dailyIncomeResponse.data,
+          weeklyIncome: weeklyIncomeResponse.data,  // Log the weekly income data
         });
 
         // Update the state with the fetched values
         setData({
-          ...data,
           dailyCompletedOrder: completedOrderResponse.data,
           pendingOrder: pendingOrderResponse.data,
           dailyIncome: dailyIncomeResponse.data,
+          weekIncomeData: weeklyIncomeResponse.data,  // Update the weekIncomeData state
         });
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -54,19 +48,17 @@ const Dashboard = () => {
 
       // Get current date and time
       const now = new Date();
-      const formattedDate = now.toLocaleDateString("en-GB"); // Format as DD/MM/YYYY
+      const formattedDate = now.toLocaleDateString("en-GB"); 
       const formattedTime = now.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
-      }); // Format as HH:mm
+      });
       setCurrentDateTime(`Date: ${formattedDate} | Time: ${formattedTime}`);
     };
 
     fetchData();
   }, []);
-
-  console.log("Dashboard data:", data);
 
   return (
     <>
@@ -102,8 +94,8 @@ const Dashboard = () => {
 
           {/* Cards Section */}
           <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 mt-6">
+            {/* Daily Completed Order */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Daily Completed Order */}
               <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
                 <div className="flex items-center justify-between w-full">
                   <h3 className="text-lg font-bold text-orange-900">
@@ -112,28 +104,27 @@ const Dashboard = () => {
                   <AiOutlineCheckCircle className="h-10 w-10 text-orange-900" />
                 </div>
                 <p className="text-3xl font-semibold text-brown-900 mt-4">
-                  {data.dailyCompletedOrder} {/* Display dynamic data */}
+                  {data.dailyCompletedOrder}
                 </p>
               </div>
 
               {/* Pending Order */}
               <button
-                  className="group flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full hover:shadow-md focus:outline-none hover:bg-orange-600"
-                  onClick={handleClick}
+                className="group flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full hover:shadow-md focus:outline-none hover:bg-orange-600"
+                onClick={handleClick}
               >
-                  <div className="flex items-center justify-between w-full">
-                      <h3 className="text-lg font-bold text-orange-900 group-hover:text-white">Pending Order</h3>
-                      <AiOutlineShoppingCart className="h-10 w-10 text-orange-900 group-hover:text-white" />
-                  </div>
-                  <p className="text-4xl font-bold text-brown-900 mt-4 group-hover:text-white">
-                      {data.pendingOrder} {/* Display dynamic data */}
-                  </p>
-              </button> {/* Close the button tag */}
-            </div> {/* Close the grid div */}
+                <div className="flex items-center justify-between w-full">
+                  <h3 className="text-lg font-bold text-orange-900 group-hover:text-white">Pending Order</h3>
+                  <AiOutlineShoppingCart className="h-10 w-10 text-orange-900 group-hover:text-white" />
+                </div>
+                <p className="text-4xl font-bold text-brown-900 mt-4 group-hover:text-white">
+                  {data.pendingOrder}
+                </p>
+              </button>
+            </div>
 
-            {/* Daily Income and Buttons Section */}
+            {/* Daily Income */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Daily Income */}
               <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-bold text-orange-900">
@@ -142,12 +133,12 @@ const Dashboard = () => {
                   <FiDollarSign className="h-10 w-10 text-orange-900" />
                 </div>
                 <p className="text-3xl font-semibold text-brown-900 mt-4">
-                  Rs. {data.dailyIncome.toLocaleString()} {/* Display dynamic data */}
+                  Rs. {data.dailyIncome.toLocaleString()}
                 </p>
               </div>
             </div>
 
-            {/* Buttons */}
+            {/* Buttons Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col space-y-4">
                 <Link to="/hotelMenuPage">
@@ -162,9 +153,9 @@ const Dashboard = () => {
                 </Link>
               </div>
             </div>
-          </div> {/* Close the space-y div */}
-        </div> {/* Close the main grid div */}
-      </div> {/* Close the main container div */}
+          </div>
+        </div>
+      </div>
     </>
   );
 };
