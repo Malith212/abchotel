@@ -2,28 +2,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const PendingOrdersTable = () => {
-  const [orders, setOrders] = useState([
-    { orderTime: '5:30 PM', tableNo: 1, items: 'French Fries, Burger', status: 'Pending' },
-    { orderTime: '6:00 PM', tableNo: 5, items: 'Salad, Pasta', status: 'Complete' },
-    { orderTime: '6:15 PM', tableNo: 3, items: 'Pizza, Soda', status: 'Pending' },
-    { orderTime: '6:45 PM', tableNo: 8, items: 'Steak, Mashed Potatoes', status: 'Pending' },
-    { orderTime: '5:30 PM', tableNo: 1, items: 'French Fries, Burger', status: 'Pending' },
-    { orderTime: '6:00 PM', tableNo: 5, items: 'Salad, Pasta', status: 'Complete' },
-    { orderTime: '6:15 PM', tableNo: 3, items: 'Pizza, Soda', status: 'Pending' },
-    { orderTime: '6:45 PM', tableNo: 8, items: 'Steak, Mashed Potatoes', status: 'Pending' },
-  ]);
-
+  const [orders, setOrders] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState('');
 
+  // Fetch data when the component is mounted
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/dashboard');
+        const response = await axios.get('http://localhost:4000/order'); // Update with your actual API endpoint
         setOrders(response.data);
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        console.error('Error fetching orders data:', error);
       }
 
+      // Set current date and time
       const now = new Date();
       const formattedDate = now.toLocaleDateString('en-GB');
       const formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -33,10 +25,36 @@ const PendingOrdersTable = () => {
     fetchData();
   }, []);
 
-  const toggleOrderStatus = (index) => {
-    const updatedOrders = [...orders];
-    updatedOrders[index].status = updatedOrders[index].status === 'Pending' ? 'Complete' : 'Pending';
-    setOrders(updatedOrders);
+  // Toggle order status between 'Pending' and 'Complete'
+  const toggleOrderStatus = async (orderId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 'Pending' ? 'Complete' : 'Pending';
+      // Update status on the backend
+      await axios.patch(`http://localhost:4000/order/state/${orderId}`, { order_status: newStatus });
+
+      // Update status in local state
+      const updatedOrders = orders.map((order) => 
+        order.order_id === orderId ? { ...order, order_status: newStatus } : order
+      );
+      setOrders(updatedOrders);
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  // Function to format order time in a more readable format
+  const formatOrderTime = (orderTime) => {
+    const date = new Date(orderTime);
+    return date.toLocaleString('en-GB', {
+      weekday: 'short', // Day of the week (e.g. Mon)
+      day: '2-digit',   // Day (e.g. 22)
+      month: 'short',   // Month (e.g. Dec)
+      year: 'numeric',  // Year (e.g. 2024)
+      hour: '2-digit',  // Hour (e.g. 03)
+      minute: '2-digit',// Minute (e.g. 46)
+      second: '2-digit',// Second (e.g. 09)
+      hour12: false     // Use 24-hour time
+    });
   };
 
   return (
@@ -60,22 +78,24 @@ const PendingOrdersTable = () => {
           </thead>
           <tbody className="divide-y divide-gray-50">
             {orders
-              .sort((a, b) => a.status.localeCompare(b.status))
-              .map((order, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-600">{order.orderTime}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{order.tableNo}</td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{order.items}</td>
+              .sort((a, b) => a.order_status.localeCompare(b.order_status)) // Sorting based on status
+              .map((order) => (
+                <tr key={order.order_id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 text-sm text-gray-600">{formatOrderTime(order.order_time)}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">{order.table_no}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {order.order_items.map((item) => `${item.dish_name} x${item.quantity}`).join(', ')}
+                  </td>
                   <td className="px-6 py-4">
                     <button
                       className={`px-4 py-1.5 rounded-full text-sm font-medium ${
-                        order.status === 'Pending'
+                        order.order_status === 'Pending'
                           ? 'bg-orange-50 text-orange-600 ring-1 ring-orange-500/20'
                           : 'bg-green-50 text-green-600 ring-1 ring-green-500/20'
                       }`}
-                      onClick={() => toggleOrderStatus(index)}
+                      onClick={() => toggleOrderStatus(order.order_id, order.order_status)}
                     >
-                      {order.status}
+                      {order.order_status}
                     </button>
                   </td>
                 </tr>
@@ -87,33 +107,35 @@ const PendingOrdersTable = () => {
       {/* Mobile View */}
       <div className="mt-6 space-y-4 md:hidden">
         {orders
-          .sort((a, b) => a.status.localeCompare(b.status))
-          .map((order, index) => (
-            <div key={index} className="p-4 rounded-lg border border-gray-100 bg-white">
+          .sort((a, b) => a.order_status.localeCompare(b.order_status))
+          .map((order) => (
+            <div key={order.order_id} className="p-4 rounded-lg border border-gray-100 bg-white">
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-sm font-medium text-gray-500">Order Time:</span>
-                  <span className="text-sm text-gray-600">{order.orderTime}</span>
+                  <span className="text-sm text-gray-600">{formatOrderTime(order.order_time)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm font-medium text-gray-500">Table No:</span>
-                  <span className="text-sm text-gray-600">{order.tableNo}</span>
+                  <span className="text-sm text-gray-600">{order.table_no}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm font-medium text-gray-500">Items:</span>
-                  <span className="text-sm text-gray-600">{order.items}</span>
+                  <span className="text-sm text-gray-600">
+                    {order.order_items.map((item) => `${item.dish_name} x${item.quantity}`).join(', ')}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-sm font-medium text-gray-500">Status:</span>
                   <button
                     className={`px-4 py-1.5 rounded-full text-sm font-medium ${
-                      order.status === 'Pending'
+                      order.order_status === 'Pending'
                         ? 'bg-orange-50 text-orange-600 ring-1 ring-orange-500/20'
                         : 'bg-green-50 text-green-600 ring-1 ring-green-500/20'
                     }`}
-                    onClick={() => toggleOrderStatus(index)}
+                    onClick={() => toggleOrderStatus(order.order_id, order.order_status)}
                   >
-                    {order.status}
+                    {order.order_status}
                   </button>
                 </div>
               </div>

@@ -24,19 +24,35 @@ const Dashboard = () => {
   const navigate = useNavigate(); // Use useNavigate hook
   
   const handleClick = () => {
-        navigate('/pendingOrderPage'); // Navigate to the pendingOrderPage
-    };
+    navigate('/pendingOrderPage'); // Navigate to the pendingOrderPage
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(""); // Add correct API endpoint in here
-        console.log("Fetched data:", response.data);
-        setData(response.data);
+        // Replace these with the actual API endpoints
+        const completedOrderResponse = await axios.get("http://localhost:4000/order/dailycompletedorderscount/count");
+        const pendingOrderResponse = await axios.get("http://localhost:4000/order/pendingcount/count");
+        const dailyIncomeResponse = await axios.get("http://localhost:4000/order/dailyincome/income");
+
+        console.log("Fetched data:", {
+          completedOrder: completedOrderResponse.data,
+          pendingOrder: pendingOrderResponse.data,
+          dailyIncome: dailyIncomeResponse.data,
+        });
+
+        // Update the state with the fetched values
+        setData({
+          ...data,
+          dailyCompletedOrder: completedOrderResponse.data,
+          pendingOrder: pendingOrderResponse.data,
+          dailyIncome: dailyIncomeResponse.data,
+        });
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       }
 
+      // Get current date and time
       const now = new Date();
       const formattedDate = now.toLocaleDateString("en-GB"); // Format as DD/MM/YYYY
       const formattedTime = now.toLocaleTimeString("en-US", {
@@ -54,103 +70,101 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className="sm:p-8 md:p-10 relative">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-orange-950">Dashboard</h2>
-        <p className="text-amber-800 font-bold">{currentDateTime}</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Week Income Graph */}
-        <div className="bg-gray-50 sm:p-6 md:p-8 lg:p-10 h-full mt-6 rounded-lg">
-          <h3 className="text-lg font-bold text-amber-950 mb-4">
-            Past Week Income Graph
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={data.weekIncomeData}>
-              <defs>
-                <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#E0440E" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#FFBB28" stopOpacity={0.8}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="income" fill="url(#colorIncome)" />
-            </BarChart>
-          </ResponsiveContainer>
+      <div className="sm:p-8 md:p-10 relative">
+        <div className="flex justify-between items-center">
+          <h2 className="text-3xl font-bold text-orange-950">Dashboard</h2>
+          <p className="text-amber-800 font-bold">{currentDateTime}</p>
         </div>
 
-        {/* Cards Section */}
-        <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 mt-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Daily Completed Order */}
-            <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
-              <div className="flex items-center justify-between w-full">
-                <h3 className="text-lg font-bold text-orange-900">
-                  Daily Completed Order
-                </h3>
-                <AiOutlineCheckCircle className="h-10 w-10 text-orange-900" />
-              </div>
-              <p className="text-3xl font-semibold text-brown-900 mt-4">
-                {/* {data.dailyCompletedOrder} */}
-                05
-              </p>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Week Income Graph */}
+          <div className="bg-gray-50 sm:p-6 md:p-8 lg:p-10 h-full mt-6 rounded-lg">
+            <h3 className="text-lg font-bold text-amber-950 mb-4">
+              Past Week Income Graph
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={data.weekIncomeData}>
+                <defs>
+                  <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#E0440E" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#FFBB28" stopOpacity={0.8}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="income" fill="url(#colorIncome)" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
-            {/* Pending Order */}
-            <button
-                className="group flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full hover:shadow-md focus:outline-none hover:bg-orange-600"
-                onClick={handleClick}
-            >
+          {/* Cards Section */}
+          <div className="space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Daily Completed Order */}
+              <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
                 <div className="flex items-center justify-between w-full">
-                    <h3 className="text-lg font-bold text-orange-900 group-hover:text-white">Pending Order</h3>
-                    <AiOutlineShoppingCart className="h-10 w-10 text-orange-900 group-hover:text-white" />
+                  <h3 className="text-lg font-bold text-orange-900">
+                    Daily Completed Order
+                  </h3>
+                  <AiOutlineCheckCircle className="h-10 w-10 text-orange-900" />
                 </div>
-                <p className="text-4xl font-bold text-brown-900 mt-4 group-hover:text-white">
-                    {/* {data.pendingOrder} */}
-                    02
+                <p className="text-3xl font-semibold text-brown-900 mt-4">
+                  {data.dailyCompletedOrder} {/* Display dynamic data */}
                 </p>
-            </button> {/* Close the button tag */}
-          </div> {/* Close the grid div */}
-
-          {/* Daily Income and Buttons Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Daily Income */}
-            <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-orange-900">
-                  Daily Income
-                </h3>
-                <FiDollarSign className="h-10 w-10 text-orange-900" />
               </div>
-              <p className="text-3xl font-semibold text-brown-900 mt-4">
-                {/* Rs. {data.dailyIncome.toLocaleString()} */}
-                Rs. 12500.00
-              </p>
+
+              {/* Pending Order */}
+              <button
+                  className="group flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full hover:shadow-md focus:outline-none hover:bg-orange-600"
+                  onClick={handleClick}
+              >
+                  <div className="flex items-center justify-between w-full">
+                      <h3 className="text-lg font-bold text-orange-900 group-hover:text-white">Pending Order</h3>
+                      <AiOutlineShoppingCart className="h-10 w-10 text-orange-900 group-hover:text-white" />
+                  </div>
+                  <p className="text-4xl font-bold text-brown-900 mt-4 group-hover:text-white">
+                      {data.pendingOrder} {/* Display dynamic data */}
+                  </p>
+              </button> {/* Close the button tag */}
+            </div> {/* Close the grid div */}
+
+            {/* Daily Income and Buttons Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Daily Income */}
+              <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-orange-900">
+                    Daily Income
+                  </h3>
+                  <FiDollarSign className="h-10 w-10 text-orange-900" />
+                </div>
+                <p className="text-3xl font-semibold text-brown-900 mt-4">
+                  Rs. {data.dailyIncome.toLocaleString()} {/* Display dynamic data */}
+                </p>
+              </div>
             </div>
-          </div>
-          {/* Buttons */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex flex-col space-y-4">
-              <Link to="/hotelMenuPage">
-                <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors duration-300 w-full">
-                  Hotel Menu
-                </button>
-              </Link>
-              <Link to="/generate-qr">
-                <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors duration-300 w-full">
-                  Add New Table
-                </button>
-              </Link>
+
+            {/* Buttons */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col space-y-4">
+                <Link to="/hotelMenuPage">
+                  <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors duration-300 w-full">
+                    Hotel Menu
+                  </button>
+                </Link>
+                <Link to="/generate-qr">
+                  <button className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors duration-300 w-full">
+                    Add New Table
+                  </button>
+                </Link>
+              </div>
             </div>
-          </div>
-        </div> {/* Close the space-y div */}
-      </div> {/* Close the main grid div */}
-    </div> {/* Close the main container div */}
+          </div> {/* Close the space-y div */}
+        </div> {/* Close the main grid div */}
+      </div> {/* Close the main container div */}
     </>
   );
 };
