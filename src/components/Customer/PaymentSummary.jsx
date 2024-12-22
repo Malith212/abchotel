@@ -33,7 +33,7 @@ const PaymentSummary = ({ setTotalAmount }) => {
   }, []);
 
   return (
-    <div className="p-8 bg-white rounded-md shadow-md relative z-10">
+    <div className="p-4 sm:p-8 bg-white rounded-md shadow-md relative z-10">
       <h2 className="text-lg font-semibold mb-4">You're paying,</h2>
       <div className="text-3xl font-bold mb-6">Rs. {total.toFixed(2)}</div>
       <div className="mb-6">

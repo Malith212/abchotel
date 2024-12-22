@@ -97,16 +97,16 @@ const ShoppingCart = () => {
   };
 
   return (
-    <div className="p-8 bg-white rounded-md shadow-md max-w-3xl mx-auto relative">
-      <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
-      <p className="text-gray-500 mb-6">Lorem Inspirem butcu gersith hostemn</p>
+    <div className="p-4 sm:p-8 bg-white rounded-md shadow-md max-w-full sm:max-w-3xl mx-auto relative">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4">Shopping Cart</h1>
+      <p className="text-gray-500 mb-6">Review your selected items and proceed to payment.</p>
       <div className="space-y-4">
         {cartItems.map((item) => (
           <div
             key={`${item.dish_id}-${item.size}`}
-            className="flex items-center justify-between p-4 bg-gray-100 rounded-lg"
+            className="flex flex-col sm:flex-row items-center justify-between p-4 bg-gray-100 rounded-lg"
           >
-            <div className="flex items-center">
+            <div className="flex items-center mb-4 sm:mb-0">
               <img
                 src={item.imageUrl || riceImg}
                 alt={item.dish_name}
@@ -149,7 +149,7 @@ const ShoppingCart = () => {
         <button
           onClick={handleProceedToPayment}
           disabled={isProceeding}
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300"
+          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 mt-6 w-full sm:w-auto"
         >
           {isProceeding ? 'Processing...' : 'Proceed to Payment'}
         </button>

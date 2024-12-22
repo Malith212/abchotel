@@ -41,9 +41,7 @@ function HotelMenuCustomer() {
       </h1>
       <p className="text-orange-700 mb-6 ml-14 mr-14">
         Indulge in our wide selection of delicious and wholesome dishes, crafted
-        to satisfy every craving. From savory meals to refreshing sides, each
-        item is made with the freshest ingredients and packed with flavor,
-        ensuring a delightful dining experience every time.
+        to satisfy every craving.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ml-14 mr-14">
