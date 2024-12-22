@@ -37,12 +37,15 @@ export default function ItemView() {
   };
 
   const handleDecrement = (size) => {
-    setQuantities({ ...quantities, [size]: Math.max((quantities[size] || 0) - 1, 0) });
+    setQuantities({
+      ...quantities,
+      [size]: Math.max((quantities[size] || 0) - 1, 0),
+    });
   };
 
   const handleAddToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    
+
     // For each size (small, medium, large), we check if there are any quantities added
     Object.keys(quantities).forEach((size) => {
       if (quantities[size] > 0) {
@@ -52,14 +55,14 @@ export default function ItemView() {
           dish_name: item.dish_name,
           size: size,
           quantity: quantities[size],
-          price: item.dishPrices.find(p => p.size === size).price,
+          price: item.dishPrices.find((p) => p.size === size).price,
         });
       }
     });
-    
+
     // Save updated cart to local storage
     localStorage.setItem("cart", JSON.stringify(cart));
-    
+
     // Show success toast notification
     toast.success("Item added to cart!");
   };
@@ -73,12 +76,15 @@ export default function ItemView() {
   }
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen flex flex-col bg-orange-50">
       {/* Toast Container */}
       <ToastContainer />
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: 'url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520)' }}
+        className="fixed inset-0 bg-cover bg-center opacity-20"
+        style={{
+          backgroundImage:
+            "url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520)",
+        }}
       ></div>
 
       {/* Navbar */}
@@ -110,7 +116,9 @@ export default function ItemView() {
         {/* Description Section */}
         <div className="pt-4">
           <h3 className="text-lg font-bold mb-2">Description</h3>
-          <p className="text-gray-600 text-sm md:text-base">{item.dish_description}</p>
+          <p className="text-gray-600 text-sm md:text-base">
+            {item.dish_description}
+          </p>
         </div>
 
         {/* Pricing and Quantity Section */}
@@ -119,9 +127,9 @@ export default function ItemView() {
             {item.dishPrices.map((price) => (
               <div
                 key={price.size}
-                className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0"
+                className="flex flex-row sm:flex-row justify-between items-center space-y-4 sm:space-y-0"
               >
-                <div className="flex-1 text-center  md:text-base">
+                <div className="flex-1 md:flex-2 lg:flex-2 text-center md:text-base lg:text-base">
                   {price.size} {item.dish_name}
                 </div>
                 <div className="flex-1 text-center text md:text-base">
@@ -134,7 +142,9 @@ export default function ItemView() {
                   >
                     -
                   </button>
-                  <span className="text md:text-base">{quantities[price.size]}</span>
+                  <span className="text md:text-base">
+                    {quantities[price.size]}
+                  </span>
                   <button
                     onClick={() => handleIncrement(price.size)}
                     className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md"
@@ -159,7 +169,7 @@ export default function ItemView() {
       </div>
 
       {/* Footer */}
-      <div className="sticky bottom-0 z-20 bg-orange-50">
+      <div className="bg-orange-50 sticky">
         <Footer />
       </div>
     </div>

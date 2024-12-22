@@ -153,7 +153,7 @@ const ShoppingCart = () => {
         <button
           onClick={handleProceedToPayment}
           disabled={isProceeding}
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 mt-6 w-full sm:w-auto"
+          className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:bg-gray-300 mt-6 w-full sm:w-auto"
         >
           {isProceeding ? 'Processing...' : 'Proceed to Payment'}
         </button>

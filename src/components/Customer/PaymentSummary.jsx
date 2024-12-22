@@ -33,9 +33,9 @@ const PaymentSummary = ({ setTotalAmount }) => {
 
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
-
+ 
   return (
-    <div className="p-4 sm:p-8 bg-white rounded-md shadow-md relative z-10">
+    <div className="p-4 sm:p-8 bg-white rounded-md shadow-md">
       <h2 className="text-lg font-semibold mb-4">You're paying,</h2>
       <div className="text-3xl font-bold mb-6">Rs. {total.toFixed(2)}</div>
       <div className="mb-6">
@@ -55,13 +55,7 @@ const PaymentSummary = ({ setTotalAmount }) => {
         <p>Rs. {total.toFixed(2)}</p>
       </div>
 
-      <div className=" text-right mt-5">
-          <button className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600">
-            <Link to='/payment'>
-           Pay
-            </Link>
-          </button>
-        </div>
+     
     </div>
   );
 };

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import logo from "../assets/image 21.png";
-
 import { FaShoppingCart } from "react-icons/fa"; // Import cart icon
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 // ...existing code...
 
 const Navbar2 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
- 
+  const navigate = useNavigate(); // Define navigate
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
