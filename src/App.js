@@ -15,6 +15,7 @@ import QRCodeGenerate from "./components/Restaurant Manager/QRCodeGenerate";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import HotelDashboard from "./Pages/HotelDashboard";
+import HotelPendingOders from "./Pages/HotelPendingOders";
 
 const stripePromise = loadStripe("pk_test_51QRSxBRvJVs0SdRcL0lKwNDdb3gjvTqLyv4DcCe1LZYW7Ht0bjEXfeTU2E8ADjvaXQjTXBnTCbgsS2cr1HZHxUSG00wDU67XgO");
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <Route path="/hotelMenuPage" element={<HotelMenuPage/>}></Route>
       <Route path="/itemMenuPageCustomer" element={<ItemMenuPageCustomer/>}></Route>
       <Route path="/hotelMenuPageCustomer" element={<HotelMenuCustomerPage/>}></Route>
+      <Route path="/pendingOrderPage" element={<HotelPendingOders/>}></Route>
       <Route path="/navbar" element={<Navbar/>}></Route>
       <Route path="/payment/:cartId" element={<Elements stripe={stripePromise}><PaymentPage /></Elements>}/>
       <Route path="/shopping" element={<ShoppingPage/>}></Route>
