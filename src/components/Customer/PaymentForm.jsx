@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useLocation, useParams } from "react-router-dom"; // Update this import
+import { toast, ToastContainer } from "react-toastify"; // Update this import
+import 'react-toastify/dist/ReactToastify.css'; // Add this import
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -16,7 +18,9 @@ const PaymentForm = ({ totalAmount  }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
   const currency = "usd";
-
+  const navigate = useNavigate();
+  const { cartId } = useParams(); // Use useParams to get cartId from URL
+  
   // Fetch clientSecret when the component mounts
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -27,6 +31,7 @@ const PaymentForm = ({ totalAmount  }) => {
           body: JSON.stringify({ amount: totalAmount, currency }),
         });
         console.log(response);
+        console.log(cartId);
         // if (!response.ok) {
         //   throw new Error("Failed to fetch client secret");
         // }
@@ -35,12 +40,12 @@ const PaymentForm = ({ totalAmount  }) => {
         setClientSecret(data.clientSecret);
       } catch (error) {
         console.error("Error fetching client secret:", error);
-        toast.error("Error initializing payment. Please try again.");
+        // toast.error("Error initializing payment. Please try again."); // Add this line
       }
     };
 
     fetchClientSecret();
-  }, [totalAmount]);
+  }, [totalAmount, cartId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,10 +78,44 @@ const PaymentForm = ({ totalAmount  }) => {
         throw new Error(confirmError.message);
       }
 
-      setIsPaymentSuccessful(true);
+      // alert(`Payment of $${totalAmount.toFixed(2)} was successful!`);
+      toast.success(`Payment of $${totalAmount.toFixed(2)} was successful!`); // Add this line
+  
+      // Send order request after payment success
+      const orderData = {
+        cart_id: cartId,  // cart_id from URL
+        total_price: totalAmount,  // total amount from payment
+        payment: {
+          customer_name: cardholderName,
+          customer_email: email,
+        },
+      };
+
+      const orderResponse = await fetch("http://localhost:4000/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!orderResponse.ok) {
+        throw new Error("Order creation failed");
+      }
+
+      const orderDataResponse = await orderResponse.json();
+      console.log("Order created successfully:", orderDataResponse);
+
+      // alert("Order has been created successfully!");
+      toast.success("Order has been created successfully!"); // Add this line
+
+      // Clear the cart in local storage
+      localStorage.removeItem("cart");
+
+      setTimeout(() => navigate("/hotelMenuPageCustomer"), 2000);
+
     } catch (error) {
       console.error("Payment Error:", error);
-      toast.error(error.message || "Payment failed. Please try again.");
+      toast.error(error.message || "Payment failed. Please try again."); // Add this line
+      
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +126,7 @@ const PaymentForm = ({ totalAmount  }) => {
       <ToastContainer/>
       <h2 className="text-2xl font-semibold mb-4">Let's Make Payment</h2>
       <p className="text-gray-600 mb-6">
-        To start your subscription, input your card details to make payment of <strong>${totalAmount.toFixed(2)}</strong>.
+        To start your subscription, input your card details to make payment of <strong>Rs {totalAmount.toFixed(2)}</strong>.
       </p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -139,23 +178,7 @@ const PaymentForm = ({ totalAmount  }) => {
           {isLoading ? "Processing..." : `Pay $${totalAmount.toFixed(2)}`}
         </button>
       </form>
-
-      {/* Payment Success Modal */}
-      {isPaymentSuccessful && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
-          <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm">
-            <h2 className="text-xl font-bold mb-4">Payment Successful!</h2>
-            <p className="text-gray-600">Thank you for your payment of ${totalAmount.toFixed(2)}.</p>
-            <button
-              onClick={() => setIsPaymentSuccessful(false)}
-              className="mt-4 w-full py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-
+      <ToastContainer /> {/* Add this line */}
     </div>
   );
 };

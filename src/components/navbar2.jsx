@@ -12,6 +12,10 @@ const Navbar2 = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const handleCartClick = () => {
+    navigate("/shopping");
+  };
+
   return (
     <nav className="fixed top-6 left-0 right-0 bg-amber-950 rounded-full mx-6 md:mx-6 flex items-center justify-between p-2">
       {/* Centered Logo */}
@@ -33,7 +37,7 @@ const Navbar2 = () => {
 
       {/* Cart Icon */}
       <div className="flex items-center pr-4">
-        <FaShoppingCart className="text-white w-6 h-6 cursor-pointer" />
+        <FaShoppingCart className="text-white w-6 h-6 cursor-pointer" onClick={handleCartClick} />
       </div>
     </nav>
   );
