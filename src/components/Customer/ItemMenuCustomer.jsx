@@ -72,17 +72,17 @@ const ItemMenuCustomer = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8 relative z-10">
+    <div className="container mx-auto py-8 relative z-10">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-orange-900 py-3 ml-14">
+          <h1 className="text-3xl font-bold text-orange-900 py-3">
             {categoryName}
           </h1>
-          <p className="text-orange-700 ml-14">{categoryDescription}</p>
+          <p className="text-orange-700">{categoryDescription}</p>
         </div>
       </div>
 
-      <div className="ml-14 mr-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-5">
         {menuItems &&
           menuItems.map((item) => <MenuItem key={item.dish_id} {...item} />)}
       </div>

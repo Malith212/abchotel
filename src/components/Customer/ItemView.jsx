@@ -49,8 +49,8 @@ export default function ItemView() {
   return (
     <div className="min-h-screen bg-orange-50">
       <div
-        className="absolute md:inset-0"
-        style={{ backgroundImage: 'url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520&w=1060)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.2 }}
+        className="absolute inset-0 bg-cover bg-center opacity-20"
+        style={{ backgroundImage: 'url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520)' }}
       ></div>
 
       {/* Navbar */}
@@ -59,7 +59,7 @@ export default function ItemView() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-grow container mx-auto py-8 px-4 md:py-24 md:px-8 relative z-10 mt-12">
+      <div className="flex-grow container mx-auto py-8 px-4 md:py-24 md:px-8 relative z-10 ">
         {/* Image and Title Section */}
         <div className="relative mt-4">
           {!imageLoaded && (
@@ -80,13 +80,13 @@ export default function ItemView() {
         </div>
 
         {/* Description Section */}
-        <div className="mt-6">
+        <div className="pt-4">
           <h3 className="text-lg font-bold mb-2">Description</h3>
           <p className="text-gray-600 text-sm md:text-base">{item.dish_description}</p>
         </div>
 
         {/* Pricing and Quantity Section */}
-        <div className="mt-6 flex flex-col items-center">
+        <div className="flex flex-col items-center pt-2">
           <div className="space-y-4 w-full max-w-md">
             {item.dishPrices.map((price) => (
               <div
