@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 
 const PaymentSummary = ({ setTotalAmount }) => {
   const [items, setItems] = useState([]);
@@ -52,6 +54,14 @@ const PaymentSummary = ({ setTotalAmount }) => {
         <p>Total</p>
         <p>Rs. {total.toFixed(2)}</p>
       </div>
+
+      <div className=" text-right mt-5">
+          <button className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600">
+            <Link to='/payment'>
+           Pay
+            </Link>
+          </button>
+        </div>
     </div>
   );
 };

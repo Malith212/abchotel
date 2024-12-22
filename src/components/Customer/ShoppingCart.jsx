@@ -116,8 +116,11 @@ const ShoppingCart = () => {
                 <h2 className="font-semibold text-lg">{item.dish_name}</h2>
                 <p className="text-gray-500 capitalize">{item.size}</p>
               </div>
+
             </div>
-            <div className="flex items-center space-x-4">
+
+
+            <div className="flex items-center justify-between w-full sm:w-auto space-x-2 sm:space-x-4">
               <div className="flex items-center">
                 <button
                   onClick={() => handleQuantityChange(item.dish_id, item.size, 'decrement')}
@@ -140,6 +143,7 @@ const ShoppingCart = () => {
               >
                 <i className="fas fa-trash"></i>
               </button>
+              
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PaymentForm from "../components/Customer/PaymentForm";
-import PaymentSummary from "../components/Customer/PaymentSummary";
+
 import Footer from "../components/footer";
 import Navbar2 from "../components/navbar2";
 
@@ -21,11 +21,13 @@ function PaymentPage() {
         </div>
 
         {/* Payment Form Section */}
-        <div className="w-full lg:w-3/5 bg-white p-4 rounded-lg shadow-lg relative">
+        <div className="w-full lg:w-3/5 bg-white p-4 rounded-lg shadow-lg relative ">
           <PaymentForm totalAmount={totalAmount} /> {/* Pass the total amount */}
         </div>
       </div>
-      <div className="absolute inset-x-0 bottom-0">
+
+      {/* Footer */}
+      <div className="sticky bottom-0 z-20 bg-orange-50">
         <Footer />
       </div>
     </div>

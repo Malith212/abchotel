@@ -6,7 +6,9 @@ import 'react-toastify/dist/ReactToastify.css'; // Add this import
 import { useNavigate } from "react-router-dom";
 
 
-const PaymentForm = ({ totalAmount }) => {
+
+
+const PaymentForm = ({ totalAmount  }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -14,9 +16,11 @@ const PaymentForm = ({ totalAmount }) => {
   const [email, setEmail] = useState("");
   const [clientSecret, setClientSecret] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
   const currency = "usd";
   const navigate = useNavigate();
   const { cartId } = useParams(); // Use useParams to get cartId from URL
+  
   // Fetch clientSecret when the component mounts
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -47,7 +51,7 @@ const PaymentForm = ({ totalAmount }) => {
     e.preventDefault();
 
     if (!stripe || !elements || !clientSecret) {
-      console.error("Stripe or ClientSecret is not available.");
+      toast.error("Stripe or ClientSecret is not available.");
       return;
     }
 
@@ -111,6 +115,7 @@ const PaymentForm = ({ totalAmount }) => {
     } catch (error) {
       console.error("Payment Error:", error);
       toast.error(error.message || "Payment failed. Please try again."); // Add this line
+      
     } finally {
       setIsLoading(false);
     }
@@ -118,6 +123,7 @@ const PaymentForm = ({ totalAmount }) => {
 
   return (
     <div className="p-8 bg-white rounded-md shadow-md max-w-lg mx-auto relative z-10">
+      <ToastContainer/>
       <h2 className="text-2xl font-semibold mb-4">Let's Make Payment</h2>
       <p className="text-gray-600 mb-6">
         To start your subscription, input your card details to make payment of <strong>Rs {totalAmount.toFixed(2)}</strong>.
