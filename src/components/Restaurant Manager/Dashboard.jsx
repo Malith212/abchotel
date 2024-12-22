@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiOutlineCheckCircle, AiOutlineShoppingCart } from "react-icons/ai";
 import { FiDollarSign } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
@@ -21,6 +21,11 @@ const Dashboard = () => {
     ],
   });
   const [currentDateTime, setCurrentDateTime] = useState("");
+  const navigate = useNavigate(); // Use useNavigate hook
+  
+  const handleClick = () => {
+        navigate('/pendingOrderPage'); // Navigate to the pendingOrderPage
+    };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +53,7 @@ const Dashboard = () => {
   console.log("Dashboard data:", data);
 
   return (
+    <>
     <div className="sm:p-8 md:p-10 relative">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold text-orange-950">Dashboard</h2>
@@ -96,19 +102,20 @@ const Dashboard = () => {
             </div>
 
             {/* Pending Order */}
-            <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
-              <div className="flex items-center justify-between w-full">
-                <h3 className="text-lg font-bold text-orange-900">
-                  Pending Order
-                </h3>
-                <AiOutlineShoppingCart className="h-10 w-10 text-orange-900" />
-              </div>
-              <button className="bg-orange-50 text-brown-900 px-4 py-4 rounded-md font-bold hover:bg-orange-500 hover:text-white transition-colors duration-300 mt-4">
-                {/* {data.pendingOrder} */}
-                02
-              </button>
-            </div>
-          </div>
+            <button
+                className="group flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full hover:shadow-md focus:outline-none hover:bg-orange-600"
+                onClick={handleClick}
+            >
+                <div className="flex items-center justify-between w-full">
+                    <h3 className="text-lg font-bold text-orange-900 group-hover:text-white">Pending Order</h3>
+                    <AiOutlineShoppingCart className="h-10 w-10 text-orange-900 group-hover:text-white" />
+                </div>
+                <p className="text-4xl font-bold text-brown-900 mt-4 group-hover:text-white">
+                    {/* {data.pendingOrder} */}
+                    02
+                </p>
+            </button> {/* Close the button tag */}
+          </div> {/* Close the grid div */}
 
           {/* Daily Income and Buttons Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -141,9 +148,10 @@ const Dashboard = () => {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </div> {/* Close the space-y div */}
+      </div> {/* Close the main grid div */}
+    </div> {/* Close the main container div */}
+    </>
   );
 };
 

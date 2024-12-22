@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import logo from "../assets/image 21.png";
-import { useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa"; // Import cart icon
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 // ...existing code...
 
 const Navbar2 = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Define navigate
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleCartClick = () => {
+    navigate("/shopping");
   };
 
   return (
@@ -33,7 +37,7 @@ const Navbar2 = () => {
 
       {/* Cart Icon */}
       <div className="flex items-center pr-4">
-        <FaShoppingCart className="text-white w-6 h-6 cursor-pointer" />
+        <FaShoppingCart className="text-white w-6 h-6 cursor-pointer" onClick={handleCartClick} />
       </div>
     </nav>
   );

@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import Navbar2 from "../navbar2";
 import Footer from "../footer";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 export default function ItemView() {
   const { dish_id } = useParams();
@@ -34,7 +37,34 @@ export default function ItemView() {
   };
 
   const handleDecrement = (size) => {
-    setQuantities({ ...quantities, [size]: Math.max((quantities[size] || 0) - 1, 0) });
+    setQuantities({
+      ...quantities,
+      [size]: Math.max((quantities[size] || 0) - 1, 0),
+    });
+  };
+
+  const handleAddToCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // For each size (small, medium, large), we check if there are any quantities added
+    Object.keys(quantities).forEach((size) => {
+      if (quantities[size] > 0) {
+        // Add item to the cart
+        cart.push({
+          dish_id: item.dish_id,
+          dish_name: item.dish_name,
+          size: size,
+          quantity: quantities[size],
+          price: item.dishPrices.find((p) => p.size === size).price,
+        });
+      }
+    });
+
+    // Save updated cart to local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Show success toast notification
+    toast.success("Item added to cart!");
   };
 
   if (!item) {
@@ -46,16 +76,24 @@ export default function ItemView() {
   }
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen flex flex-col bg-orange-50">
+      {/* Toast Container */}
+      <ToastContainer />
       <div
-        className="absolute inset-0"
-        style={{ backgroundImage: 'url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520&w=1060)', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.2 }}
+        className="fixed inset-0 bg-cover bg-center opacity-20"
+        style={{
+          backgroundImage:
+            "url(https://img.freepik.com/free-photo/top-view-circular-food-frame_23-2148723455.jpg?t=st=1734521074~exp=1734524674~hmac=7b00696977e1fa6c8169ef3c5887450344265f9875995ffb44368c528f9e7520)",
+        }}
       ></div>
+
       {/* Navbar */}
-      <Navbar2 />
+      <div className="sticky top-0 z-20 bg-orange-50">
+        <Navbar2 />
+      </div>
 
       {/* Main Content */}
-      <div className="flex-grow container mx-auto py-24 relative z-10">
+      <div className="flex-grow container mx-auto py-8 px-4 md:py-24 md:px-8 relative z-10 ">
         {/* Image and Title Section */}
         <div className="relative mt-4">
           {!imageLoaded && (
@@ -66,33 +104,35 @@ export default function ItemView() {
           <img
             src={item.dish_image_url} // Use the image URL from the fetched item
             alt={item.dish_name}
-            className="w-full h-64 object-cover rounded-md"
+            className="w-full h-48 md:h-64 object-cover rounded-md"
             onLoad={() => setImageLoaded(true)}
           />
           <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 text-white p-2 rounded-md">
-            <h2 className="text-2xl font-bold">{item.dish_name}</h2>
-            <p className="text-sm">{item.dish_description}</p>
+            <h2 className="text-xl md:text-2xl font-bold">{item.dish_name}</h2>
+            <p className="text-xs md:text-sm">{item.dish_description}</p>
           </div>
         </div>
 
         {/* Description Section */}
-        <div className="mt-6">
+        <div className="pt-4">
           <h3 className="text-lg font-bold mb-2">Description</h3>
-          <p className="text-gray-600">{item.dish_description}</p>
+          <p className="text-gray-600 text-sm md:text-base">
+            {item.dish_description}
+          </p>
         </div>
 
         {/* Pricing and Quantity Section */}
-        <div className="mt-6 flex justify-center">
-          <div className="space-y-4 w-full max-w-2xl">
+        <div className="flex flex-col items-center pt-2">
+          <div className="space-y-4 w-full max-w-md">
             {item.dishPrices.map((price) => (
               <div
                 key={price.size}
-                className="flex justify-between items-center"
+                className="flex flex-row sm:flex-row justify-between items-center space-y-4 sm:space-y-0"
               >
-                <div className="flex-1 text-center">
+                <div className="flex-1 md:flex-2 lg:flex-2 text-center md:text-base lg:text-base">
                   {price.size} {item.dish_name}
                 </div>
-                <div className="flex-1 text-center">
+                <div className="flex-1 text-center text md:text-base">
                   Rs. {Number(price.price).toFixed(2)}
                 </div>
                 <div className="flex-1 flex justify-center items-center space-x-2">
@@ -102,7 +142,9 @@ export default function ItemView() {
                   >
                     -
                   </button>
-                  <span>{quantities[price.size]}</span>
+                  <span className="text md:text-base">
+                    {quantities[price.size]}
+                  </span>
                   <button
                     onClick={() => handleIncrement(price.size)}
                     className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md"
@@ -117,14 +159,17 @@ export default function ItemView() {
 
         {/* Add to Cart Button */}
         <div className="mt-6 text-right">
-          <button className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600">
+          <button
+            onClick={handleAddToCart}
+            className="bg-orange-500 text-white py-2 px-6 rounded-md shadow-md hover:bg-orange-600"
+          >
             Add to cart
           </button>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="absolute inset-x-0 bottom-0">
+      <div className="bg-orange-50 sticky">
         <Footer />
       </div>
     </div>
