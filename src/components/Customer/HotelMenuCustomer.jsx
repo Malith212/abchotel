@@ -19,6 +19,7 @@ const MenuItem = ({ category_name, category_image_url, category_id }) => (
 
 function HotelMenuCustomer() {
   const [menuItems, setMenuItems] = useState([]);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,17 +35,31 @@ function HotelMenuCustomer() {
     fetchData();
   }, []);
 
+  const toggleDescription = () => setShowFullDescription(!showFullDescription);
+
   return (
     <div className="container mx-auto px-4 py-8 relative z-10">
       <h1 className="text-3xl font-bold text-orange-900 mb-2 ml-14">
         Hotel Menu
       </h1>
-      <p className="text-orange-700 mb-6 ml-14 mr-14">
-        Indulge in our wide selection of delicious and wholesome dishes, crafted
-        to satisfy every craving. From savory meals to refreshing sides, each
-        item is made with the freshest ingredients and packed with flavor,
-        ensuring a delightful dining experience every time.
-      </p>
+      <div className="ml-14 mr-14 mb-6">
+        <p
+          className={`text-orange-700 ${
+            showFullDescription ? "line-clamp-none" : "line-clamp-3"
+          }`}
+        >
+          Indulge in our wide selection of delicious and wholesome dishes,
+          crafted to satisfy every craving. From savory meals to refreshing
+          sides, each item is made with the freshest ingredients and packed with
+          flavor, ensuring a delightful dining experience every time.
+        </p>
+        <button
+          onClick={toggleDescription}
+          className="text-orange-900 mt-2 "
+        >
+          {showFullDescription ? "Show Less" : "Show More.."}
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ml-14 mr-14">
         {/* assuming one item is an object and it has elements title and imageUrl */}
