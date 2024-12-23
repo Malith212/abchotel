@@ -32,7 +32,7 @@ function App() {
       <Route path="/itemMenuPage" element = {<ItemMenuPage/>}></Route>
       <Route path="/hotelMenuPage" element={<HotelMenuPage/>}></Route>
       <Route path="/itemMenuPageCustomer" element={<ItemMenuPageCustomer/>}></Route>
-      <Route path="/hotelMenuPageCustomer" element={<HotelMenuCustomerPage/>}></Route>
+      <Route path="/hotelMenuPageCustomer/:table_id" element={<HotelMenuCustomerPage/>}></Route>
       <Route path="/pendingOrderPage" element={<HotelPendingOders/>}></Route>
       <Route path="/navbar" element={<Navbar/>}></Route>
       <Route path="/payment/:cartId" element={<Elements stripe={stripePromise}><PaymentPage /></Elements>}/>
