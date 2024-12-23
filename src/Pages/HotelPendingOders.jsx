@@ -14,10 +14,10 @@ function HotelPendingOders() {
       <div className="sticky top-0 z-20 bg-orange-50">
         <Navbar/>
       </div>
-      <div className=" py-14 relative">
+      <div className="flex-grow py-14 relative">
         <PendingOrdersTable />
       </div>
-      <div className="sticky bottom-0 z-20 bg-orange-50">
+      <div className="mt-auto z-20 bg-orange-50">
         <Footer />
       </div>
     </div>
