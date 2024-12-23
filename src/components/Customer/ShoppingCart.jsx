@@ -67,10 +67,14 @@ const ShoppingCart = () => {
     try {
       setIsProceeding(true);
 
+      // Get table_id from localStorage
+      const tableId = localStorage.getItem('table_id');
+
       // Step 1: Create the cart in the backend
       const cartResponse = await axios.post('http://localhost:4000/carts', {
         cart_status: 'active',
         is_active: true,
+        table_id: tableId, // Include table_id in the request
       });
       const newCartId = cartResponse.data.cart_id;
       setCartId(newCartId);
