@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import HotelMenuCustomer from "../components/Customer/HotelMenuCustomer";
 import Footer from "../components/footer";
 import Navbar2 from "../components/navbar2";
 
 function HotelMenuCustomerPage() {
+  const { table_id } = useParams();
+
+  useEffect(() => {
+    if (table_id) {
+      localStorage.setItem('table_id', table_id);
+    }
+  }, [table_id]);
+
   return (
     <div className="min-h-screen bg-orange-50 relative flex flex-col">
       <div
