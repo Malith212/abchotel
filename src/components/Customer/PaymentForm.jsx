@@ -110,7 +110,11 @@ const PaymentForm = ({ totalAmount  }) => {
       // Clear the cart in local storage
       localStorage.removeItem("cart");
 
-      setTimeout(() => navigate("/hotelMenuPageCustomer"), 2000);
+      // Get table_id from local storage
+      const tableId = localStorage.getItem("table_id");
+
+      // Navigate to the hotel menu page with table_id
+      setTimeout(() => navigate(`/hotelMenuPageCustomer/${tableId}`), 2000);
 
     } catch (error) {
       console.error("Payment Error:", error);
