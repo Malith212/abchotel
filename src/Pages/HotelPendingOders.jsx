@@ -17,7 +17,7 @@ function HotelPendingOders() {
       <div className="flex-grow py-14 relative">
         <PendingOrdersTable />
       </div>
-      <div className="mt-auto z-20 bg-orange-50">
+      <div className="absolute inset-x-0 bottom-0">
         <Footer />
       </div>
     </div>
