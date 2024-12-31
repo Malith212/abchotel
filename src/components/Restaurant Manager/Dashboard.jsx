@@ -128,12 +128,12 @@ const Dashboard = () => {
               <div className="flex flex-col justify-between border-orange-400 border-2 rounded-lg p-4 h-full">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-bold text-orange-900">
-                    Daily Income
+                    Daily Total Income
                   </h3>
                   <FiDollarSign className="h-10 w-10 text-orange-900" />
                 </div>
                 <p className="text-3xl font-semibold text-brown-900 mt-4">
-                  Rs. {data.dailyIncome.toLocaleString()}
+                  Rs. {data.dailyIncome.toLocaleString()}.00
                 </p>
               </div>
             </div>
