@@ -5,6 +5,8 @@ const PendingOrdersTable = () => {
   const [orders, setOrders] = useState([]);
   const [currentDateTime, setCurrentDateTime] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'order_status', direction: 'ascending' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 6;
 
   // Fetch data when the component is mounted
   useEffect(() => {
@@ -78,6 +80,19 @@ const PendingOrdersTable = () => {
     return 0;
   });
 
+  // Function to handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Calculate the current orders to display based on pagination
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = sortedOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
+
   // Function to get the sort icon
   const getSortIcon = (key) => {
     if (sortConfig.key === key) {
@@ -89,7 +104,7 @@ const PendingOrdersTable = () => {
   return (
     <div className="p-6 sm:p-8 md:p-10 lg:p-12">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-2">
         <h2 className="text-2xl text-amber-950 font-bold">Pending Orders</h2>
         <p className="text-amber-950 font-bold">{currentDateTime}</p>
       </div>
@@ -112,7 +127,7 @@ const PendingOrdersTable = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {sortedOrders.map((order) => (
+            {currentOrders.map((order) => (
               <tr key={order.order_id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm text-gray-600">{formatOrderTime(order.order_time)}</td>
                 <td className="px-6 py-4 text-sm text-gray-600">{order.table_no}</td>
@@ -135,6 +150,20 @@ const PendingOrdersTable = () => {
             ))}
           </tbody>
         </table>
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-2 mb-2">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              className={`px-3 py-1 mx-1 rounded ${
+                currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-700'
+              }`}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Mobile View */}
